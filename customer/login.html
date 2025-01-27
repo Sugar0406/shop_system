@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LOGIN</title>
+        <link rel="stylesheet" type="text/css" href="./customer_css/login.css">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+        
+    </head>
+
+    <body>    
+
+        <div class="login_wrapper">
+            <div class="login_word">LOGIN</div>
+
+            <form id="login_form" action="./login.php" method="POST">
+
+                <div class="account_input_container">
+                    <input class="login_user_account_input" placeholder="USER ACCOUNT" name="user_account" required />
+                </div>
+
+                <div class="password_input_container">
+                    <input id="login_user_password_input" class="login_user_password_input" placeholder="PASSWORD" type="password" name="user_password" required/>
+
+                    <!-- 將 show_passwords_button 的 <button> 標籤 type 設置為 "button"，避免它默認成為提交按鈕。 -->
+                    <button id="show_passwords_button" class="show_passwords_button" type="button">
+                        <i id="password_button_icon" class="fa-solid fa-eye-slash"></i>
+                    </button>
+                </div>
+                
+                <div class="login_button_container">
+                    <!-- submit:如果按鈕被點擊 表單執行相對應的操作(定義在action) -->                    
+                    <button class="login_button" type="submit">LOGIN</button>
+                </div>
+
+            </form>
+
+            <div class="register_container">
+                <div class="register_banner">New customer?</div>
+                <a class="register_word_botton" href="register.html">Sign up</a>
+            </div>
+
+        </div> 
+
+        <!-- 暫時顯示密碼 -->
+        <script>
+            const togglePassword = document.getElementById("login_user_password_input")
+            const showPasswordButton = document.getElementById("show_passwords_button")
+            const password_btn_icon = document.getElementById("password_button_icon")
+
+
+
+            //指標按下時 顯示密碼(將type改為text)
+            showPasswordButton.addEventListener('mousedown', function () {
+
+                event.preventDefault(); // 阻止按鈕默認行為
+                togglePassword.type = "text";
+
+                // 切換圖標
+                password_btn_icon.classList.remove('fa-eye-slash'); // 移除隱藏圖標
+                password_btn_icon.classList.add('fa-eye'); // 顯示密碼圖標
+                
+            });
+
+            //指標鬆開時 隱藏密碼(將type改回password)
+            showPasswordButton.addEventListener('mouseup', function () {
+                event.preventDefault(); // 阻止按鈕默認行為
+                togglePassword.type = "password";
+
+                password_btn_icon.classList.remove('fa-eye'); // 移除顯示圖標
+                password_btn_icon.classList.add('fa-eye-slash'); // 隱藏密碼圖標
+            })
+
+            // 處理按鈕的 "mouseleave"（防止滑出按鈕時圖標狀態不正確）
+            showPasswordButton.addEventListener('mouseleave', function () {
+                togglePassword.type = "password";
+                password_btn_icon.classList.remove('fa-eye');
+                password_btn_icon.classList.add('fa-eye-slash');
+            });
+        </script>
+
+
+    </body>
+
+</html>
+
+

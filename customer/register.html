@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>REGISTER</title>
+        <link rel="stylesheet" type="text/css" href="./customer_css/register.css">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    </head>
+
+    <body>
+        <div class="register_wrapper">
+            <div class="register_word">REGISTER</div>
+
+            <form id="register_form" action="./register.php" method="POST">
+
+                <div class="username_word">Input user name</div>
+                <div class="username_input_container">
+                    <input class="register_user_name_input" placeholder="USER NAME" name="user_name" required />
+                </div>
+                
+
+                <div class="email_word">Input your email (account)</div>
+                <div class="account_input_container">
+                    <input class="register_user_account_input" placeholder="EMAIL (ACCOUNT)" name="user_account" required />
+                </div>
+
+                
+                <div class="password_word">Input your password</div>
+                <div class="password_input_container">
+                    <input id="register_user_password_input" class="register_user_password_input" placeholder="PASSWORD" type="password" name="user_password" required/>
+
+                    <!-- 將 show_passwords_button 的 <button> 標籤 type 設置為 "button"，避免它默認成為提交按鈕。 -->
+                    <button id="show_passwords_button" class="show_passwords_button" type="button">
+                        <i id="password_button_icon" class="fa-solid fa-eye-slash"></i>
+                    </button>
+                </div>
+
+                
+
+                <div class="fullname_word">Input your fullname</div>
+                <div class="fullname_input_container">
+                    <input class="register_user_fullname_input" placeholder="FULLNAME" name="user_fullname" required />
+                </div>
+
+
+
+                <div class="address_word">Input your address</div>
+                <div class="address_input_container">
+                    <input class="register_user_address_input" placeholder="ADDRESS" name="user_address" required />
+                </div>
+
+                <div class="phone_word">Input your phone number</div>
+                <div class="phone_input_container">
+                    <input class="register_user_phone_input" placeholder="PHONE NUMBER" name="user_phone" required />
+                </div>
+
+
+                <div class="register_button_container">
+                    <!-- submit:如果按鈕被點擊 表單執行相對應的操作(定義在action) -->                    
+                    <button class="register_button" type="submit">REGISTER ACCOUNT</button>
+                </div>
+
+            </form>
+
+
+
+            <!-- 暫時顯示密碼 -->
+            <script>
+                const togglePassword = document.getElementById("register_user_password_input")
+                const showPasswordButton = document.getElementById("show_passwords_button")
+                const password_btn_icon = document.getElementById("password_button_icon")
+
+
+
+                //指標按下時 顯示密碼(將type改為text)
+                showPasswordButton.addEventListener('mousedown', function () {
+
+                    event.preventDefault(); // 阻止按鈕默認行為
+                    togglePassword.type = "text";
+
+                    // 切換圖標
+                    password_btn_icon.classList.remove('fa-eye-slash'); // 移除隱藏圖標
+                    password_btn_icon.classList.add('fa-eye'); // 顯示密碼圖標
+                    
+                });
+
+                //指標鬆開時 隱藏密碼(將type改回password)
+                showPasswordButton.addEventListener('mouseup', function () {
+                    event.preventDefault(); // 阻止按鈕默認行為
+                    togglePassword.type = "password";
+
+                    password_btn_icon.classList.remove('fa-eye'); // 移除顯示圖標
+                    password_btn_icon.classList.add('fa-eye-slash'); // 隱藏密碼圖標
+                })
+
+                // 處理按鈕的 "mouseleave"（防止滑出按鈕時圖標狀態不正確）
+                showPasswordButton.addEventListener('mouseleave', function () {
+                    togglePassword.type = "password";
+                    password_btn_icon.classList.remove('fa-eye');
+                    password_btn_icon.classList.add('fa-eye-slash');
+                });
+            </script>
+
+
+
+        </div>
+
+    </body>
+
+</html>

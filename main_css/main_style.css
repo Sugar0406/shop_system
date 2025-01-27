@@ -1,0 +1,92 @@
+/* 清除默認邊界和填充 */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;  /* 使 body 占据整个页面的高度 */
+
+    min-width: 800px;
+}
+
+
+.main_banner{
+    
+    background-color: lightgray;
+
+
+    display: flex;
+
+    justify-content: flex-start; /* 水平對齊 */
+    align-items: center; /* 垂直對齊 */
+}
+
+
+.main_banner_title{
+    color: coral;
+    font-family: Verdana, sans-serif;
+    font-weight: bolder;
+    font-size: larger;
+    width: 20%;
+
+    flex: none;
+    text-align: left;
+    margin: 20px;
+
+    white-space: nowrap; /* 禁止文字換行 */
+    overflow: hidden;       /* 超出部分隐藏 */
+}
+
+.inputbar_button_wrapper{
+    display: flex;
+    flex: none;
+
+    width: 50%;
+
+}
+
+.eshop_search_bar{
+    flex: auto;
+
+    background-color: #f8f9fa;
+
+    width: 70%;
+    border: #f8f9fa;
+
+
+}
+
+.eshop_search_button{
+    flex: auto;
+    color: coral;
+    margin-left: 5px;
+}
+
+
+.login_register_wrapper{
+    flex: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.login_word{
+    flex: none;
+
+    font-family: Verdana, sans-serif;
+}
+
+.login_register_divider{
+    flex: none;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.register_word{
+    flex: none;
+
+    font-family: Verdana, sans-serif;
+}
+
+
+
+
