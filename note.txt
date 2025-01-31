@@ -1,1 +1,2 @@
-http://shop_system.com
+web網址 : http://shop_system.com
+mysql phpmyadmin : http://localhost/phpmyadmin
