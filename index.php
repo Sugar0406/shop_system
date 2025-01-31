@@ -1,7 +1,7 @@
 <?php
 
 //將原網址重新導向到指定的php檔案 
-header("Location: /main.html");
+header("Location: /main.php");
 
 
 

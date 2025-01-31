@@ -11,7 +11,9 @@ body {
     padding: 0;
     height: 100%;  
 
+    /* 當網頁大小小於該數字時 不會在縮放元件 (避免暴版) */
     min-width: 800px;
+    min-height: 1000px;
     background-color: rgb(239, 239, 239);
 
     display: flex;
@@ -28,7 +30,7 @@ body {
     width: 500px;
     height: 100%;
     background-color: white;
-    border-radius: 10px;
+    /* border-radius: 10px; */ /* 圓弧角度 */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
@@ -124,7 +126,7 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%; 
-    margin: 0px 0px 20px 0px; 
+    margin: 0px 0px 23px 0px; 
 }
 
 /* 設置密碼輸入框寬度與帳號輸入框一致 */
@@ -154,6 +156,89 @@ body {
     color: #999;
 }
 /* password password password password password password password password password password password password password password  */
+
+
+
+/* confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password   */
+.confirm_password_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+    margin: 0px 0px 8px 0px;
+}
+
+.confirm_password_input_container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    margin: 0px 0px 23px 0px; 
+}
+
+/* 設置密碼輸入框寬度與帳號輸入框一致 */
+.register_user_confirm_password_input {
+    width: 100%; /* 這樣密碼輸入框的寬度會填滿整個容器 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    padding-right: 40px; /* 預留空間給按鈕 */
+}
+.register_user_confirm_password_input::placeholder {
+    color: #999;
+}
+
+/* 顯示/隱藏密碼按鈕 */
+.show_confirm_passwords_button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); /* 垂直置中 */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #999;
+}
+/* confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password   */
+
+
+
+
+/* photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo  */
+.photo_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.photo_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.register_user_photo_input {
+    width: 100%; 
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; 
+}
+.register_user_photo_input::placeholder {
+    color: #999;
+}
+
+/* photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo  */
+
 
 
 /* fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname  */
@@ -251,6 +336,14 @@ body {
 }
 /* phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone  */
 
+.register_button_container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
 
 .register_button{
     background-color: #4CAF50;
@@ -261,4 +354,5 @@ body {
     cursor: pointer;
     font-size: 16px;
     margin: 10px;
+
 }

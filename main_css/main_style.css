@@ -66,6 +66,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     margin-left: 10px;
 }
 
@@ -87,6 +88,26 @@ html, body {
     font-family: Verdana, sans-serif;
 }
 
+.user_info{
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    width: 50%;
+    height: 50%;
+}
+
+.user_name{
+    font-family: Verdana, sans-serif;
+    margin: 10px;
+}
+
+.user_picture{
+    width: auto;
+    height: 50px;
+}
 
 
 

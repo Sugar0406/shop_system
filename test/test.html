@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            background-color: #f4f4f4;
+        }
+
+        /* 左側菜單 */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #2C3E50;
+            color: white;
+            padding-top: 20px;
+            position: fixed;
+        }
+
+        .sidebar .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #34495E;
+            border-radius: 5px;
+        }
+
+        /* 主要內容區域 */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* 隱藏未選中的內容 */
+        .content-section {
+            display: none;
+        }
+
+        /* 顯示當前選中的區域 */
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 左側菜單 -->
+    <div class="sidebar">
+        <div class="logo">
+            <h2>My Dashboard</h2>
+        </div>
+        <ul>
+            <li><a href="#" data-section="home">Home</a></li>
+            <li><a href="#" data-section="user-management">User Management</a></li>
+            <li><a href="#" data-section="settings">Settings</a></li>
+            <li><a href="#" data-section="messages">Messages</a></li>
+            <li><a href="#" data-section="reports">Reports</a></li>
+            <li><a href="#" data-section="logout">Log Out</a></li>
+        </ul>
+    </div>
+
+    <!-- 主要內容區域 -->
+    <div class="main-content">
+        <div id="home" class="content-section active">
+            <h1>Home</h1>
+            <p>Welcome to the dashboard homepage!</p>
+        </div>
+
+        <div id="user-management" class="content-section">
+            <h1>User Management</h1>
+            <p>Manage your users here.</p>
+        </div>
+
+        <div id="settings" class="content-section">
+            <h1>Settings</h1>
+            <p>Adjust your system settings.</p>
+        </div>
+
+        <div id="messages" class="content-section">
+            <h1>Messages</h1>
+            <p>View your messages.</p>
+        </div>
+
+        <div id="reports" class="content-section">
+            <h1>Reports</h1>
+            <p>Access system reports.</p>
+        </div>
+
+        <div id="logout" class="content-section">
+            <h1>Logging Out...</h1>
+            <p>You will be redirected soon.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 取得所有選單按鈕
+            const menuItems = document.querySelectorAll(".sidebar ul li a");
+            // 取得所有內容區塊
+            const sections = document.querySelectorAll(".content-section");
+
+            menuItems.forEach(item => {
+                item.addEventListener("click", function(event) {
+                    event.preventDefault(); // 防止跳轉
+
+                    // 取得對應的 section ID
+                    const sectionId = this.getAttribute("data-section");
+
+                    // 隱藏所有內容區域
+                    sections.forEach(section => {
+                        section.classList.remove("active");
+                    });
+
+                    // 顯示被選中的內容
+                    document.getElementById(sectionId).classList.add("active");
+
+                    // 如果點擊的是 Log Out，則模擬登出（可以改為真正的登出邏輯）
+                    if (sectionId === "logout") {
+                        setTimeout(() => {
+                            alert("You have been logged out.");
+                            window.location.href = "login.html"; // 跳轉到登入頁
+                        }, 2000);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
