@@ -1,0 +1,365 @@
+html{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100%
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;  
+
+    /* 當網頁大小小於該數字時 不會在縮放元件 (避免暴版) */
+    min-width: 800px;
+    min-height: 1000px;
+    background-color: rgb(239, 239, 239);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+}
+
+
+
+.edit_user_info_wrapper {
+    width: 500px;
+    height: 100%;
+    background-color: white;
+    /* border-radius: 10px; */ /* 圓弧角度 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: start;
+}
+
+
+.edit_user_info_word {
+    font-family: Verdana, sans-serif;
+    font-size: 30px;
+    color: black;
+    margin: 10px 0px 25px 0px;
+}
+
+
+/* username username username username username username username username username username username username  */
+.username_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.username_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.register_user_name_input {
+    width: 100%; /* 保持相同寬度 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; /* 確保垂直間距一致 */
+}
+.register_user_name_input::placeholder {
+    color: #999;
+}
+/* username username username username username username username username username username username username */
+
+
+/* account account account account account account account account account account account account account account  */
+.email_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.account_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.register_user_account_input {
+    width: 100%; /* 保持相同寬度 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; /* 確保垂直間距一致 */
+}
+.register_user_account_input::placeholder {
+    color: #999;
+}
+/* account account account account account account account account account account account account account account  */
+
+
+/* password password password password password password password password password password password password password password  */
+.password_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+    margin: 0px 0px 8px 0px;
+}
+
+.password_input_container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    margin: 0px 0px 23px 0px; 
+}
+
+/* 設置密碼輸入框寬度與帳號輸入框一致 */
+.register_user_password_input {
+    width: 100%; /* 這樣密碼輸入框的寬度會填滿整個容器 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    padding-right: 40px; /* 預留空間給按鈕 */
+}
+.register_user_password_input::placeholder {
+    color: #999;
+}
+
+/* 顯示/隱藏密碼按鈕 */
+.show_passwords_button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); /* 垂直置中 */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #999;
+}
+/* password password password password password password password password password password password password password password  */
+
+
+
+/* confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password   */
+.confirm_password_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+    margin: 0px 0px 8px 0px;
+}
+
+.confirm_password_input_container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    margin: 0px 0px 23px 0px; 
+}
+
+/* 設置密碼輸入框寬度與帳號輸入框一致 */
+.register_user_confirm_password_input {
+    width: 100%; /* 這樣密碼輸入框的寬度會填滿整個容器 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    padding-right: 40px; /* 預留空間給按鈕 */
+}
+.register_user_confirm_password_input::placeholder {
+    color: #999;
+}
+
+/* 顯示/隱藏密碼按鈕 */
+.show_confirm_passwords_button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); /* 垂直置中 */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #999;
+}
+/* confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password confirm_password   */
+
+
+
+
+/* photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo  */
+.photo_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.photo_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.register_user_photo_input {
+    width: 100%; 
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; 
+}
+.register_user_photo_input::placeholder {
+    color: #999;
+}
+
+/* photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo photo  */
+
+
+
+/* fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname  */
+.fullname_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.fullname_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.register_user_fullname_input {
+    width: 100%; /* 保持相同寬度 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; /* 確保垂直間距一致 */
+}
+.register_user_fullname_input::placeholder {
+    color: #999;
+}
+/* fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname fullname  */
+
+
+/* address address address address address address address address address address address address address address address address  */
+.address_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.address_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.register_user_address_input {
+    width: 100%; /* 保持相同寬度 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; /* 確保垂直間距一致 */
+}
+.register_user_address_input::placeholder {
+    color: #999;
+}
+/* address address address address address address address address address address address address address address address address  */
+
+
+/* phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone  */
+.phone_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.hint_photo_word{
+    font-family: Verdana, sans-serif;
+    font-size: 13px;
+    color: red;
+    margin : 5px 0px 0px 0px;
+}
+
+.phone_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.register_user_phone_input {
+    width: 100%; /* 保持相同寬度 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; /* 確保垂直間距一致 */
+}
+.register_user_phone_input::placeholder {
+    color: #999;
+}
+/* phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone phone  */
+
+.edit_button_container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.edit_button{
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+
+}

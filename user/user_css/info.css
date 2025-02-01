@@ -1,3 +1,25 @@
+/* 單頁跳轉設定 單頁跳轉設定 單頁跳轉設定 單頁跳轉設定 單頁跳轉設定 單頁跳轉設定  */
+
+/* 主要內容區域 */
+.main-content {
+    display: flex;
+    margin: 200px 0px 0px 300px; /* 假設 sidebar 寬度為 250px，避免重疊 */
+}
+
+/* 隱藏未選中的內容 */
+.content-section {
+    display: none;
+}
+
+/* 顯示當前選中的區域 */
+.active {
+    display: block;
+}
+
+/* 單頁跳轉設定 單頁跳轉設定 單頁跳轉設定 單頁跳轉設定 單頁跳轉設定 單頁跳轉設定  */
+
+
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -5,7 +27,9 @@ body {
     background-color: #f4f4f4;
 }
 
-/* 左側菜單 */
+
+
+/* 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單  */
 .sidebar {
     width: 250px;
     height: 100vh;
@@ -32,10 +56,12 @@ body {
 }
 
 .sidebar .user_info img {
-    width: auto;
-    height: 100px; 
+    width: 130px;
+    height: 130px; 
     margin: 10px;
+    border-radius: 6rem; /* rem : 代表邊角的半徑,是相對於 html 預設字體大小,通常 1rem = 16px */
 }
+
 
 .sidebar ul {
     list-style-type: none;
@@ -60,15 +86,260 @@ body {
     background-color: rgb(199, 129, 0);
     /* border-radius: 5px; */
 }
+/* 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單  */
 
 
 
+/* My_Account My_Account My_Account My_Account My_Account My_Account  */
+
+.my_account_title {
+    font-family: Verdana, sans-serif;
+    color: coral;
+
+}
+
+/* user_name */
+.user_name_wrapper {
+    margin: 10px 0px 10px 0px ;
+}
+.user_name_field_word {
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+.user_name {
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+}
 
 
-/* 主要內容區域 */
+/* email */
+.email_wrapper {
+    margin: 10px 0px 10px 0px ;
+}
+.email_field_word {
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+.email {
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+}
 
-/* 基礎單頁跳轉設定 基礎單頁跳轉設定 基礎單頁跳轉設定 基礎單頁跳轉設定 */
+/* fullname */
+.fullname_wrapper {
+    margin: 10px 0px 10px 0px ;
+}
+.fullname_field_word {
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+.fullname {
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+}
 
-/* 基礎單頁跳轉設定 基礎單頁跳轉設定 基礎單頁跳轉設定 基礎單頁跳轉設定 */
+/* address */
+.address_wrapper {
+    margin: 10px 0px 10px 0px ;
+}
+.address_field_word {
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+.address {
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+}
+
+/* phone */
+.phone_wrapper {
+    margin: 10px 0px 10px 0px ;
+}
+.phone_field_word {
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+.phone {
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+}
+
+.edit_basic_info_button{
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
 
 
+/* My_Account My_Account My_Account My_Account My_Account My_Account  */
+
+
+
+/* change_password change_password change_password change_password change_password  */
+
+.change_password_wrapper {
+    height: 100%;
+}
+
+.change_password_title {
+    font-family: Verdana, sans-serif;
+    color: coral;
+
+}
+
+
+/* origin password */
+.origin_password_input_container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    margin: 5px 0px 15px 0px; 
+}
+
+.origin_password_input {
+    width: 100%; /* 這樣密碼輸入框的寬度會填滿整個容器 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    padding-right: 40px; /* 預留空間給按鈕 */
+}
+.origin_password_input::placeholder {
+    color: #999;
+}
+
+.show_origin_password_button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); /* 垂直置中 */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #999;
+}
+
+
+/* new password */
+.new_password_input_container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    margin: 5px 0px 15px 0px; 
+}
+
+.new_password_input {
+    width: 100%; /* 這樣密碼輸入框的寬度會填滿整個容器 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    padding-right: 40px; /* 預留空間給按鈕 */
+}
+.new_password_input::placeholder {
+    color: #999;
+}
+
+.show_new_password_button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); /* 垂直置中 */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #999;
+}
+
+
+/* confirm_new_password */
+.confirm_new_password_input_container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    margin: 5px 0px 15px 0px; 
+}
+
+.confirm_new_password_input {
+    width: 100%; /* 這樣密碼輸入框的寬度會填滿整個容器 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    padding-right: 40px; /* 預留空間給按鈕 */
+}
+.confirm_new_password_input::placeholder {
+    color: #999;
+}
+
+.show_confirm_password_button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); /* 垂直置中 */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #999;
+}
+
+/* change password button */
+.change_password_button{
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px 0px 0px 0px;
+
+}
+
+
+
+/* change_password change_password change_password change_password change_password  */
+
+
+
+/* my_purchase my_purchase my_purchase my_purchase my_purchase my_purchase my_purchase  */
+
+.my_purchase_title {
+    font-family: Verdana, sans-serif;
+    color: coral;
+
+}
+
+/* my_purchase my_purchase my_purchase my_purchase my_purchase my_purchase my_purchase  */
+
+
+/* my_product my_product my_product my_product my_product my_product my_product  */
+
+.my_product_title {
+    font-family: Verdana, sans-serif;
+    color: coral;
+
+}
+
+/* my_product my_product my_product my_product my_product my_product my_product  */

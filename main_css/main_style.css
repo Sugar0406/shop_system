@@ -58,6 +58,7 @@ html, body {
     flex: auto;
     color: coral;
     margin-left: 5px;
+    border: none;
 }
 
 

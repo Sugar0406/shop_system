@@ -51,7 +51,7 @@
 
 
     // 允許上傳的檔案類型
-    $allowedExtensions = ['jpg', 'jpeg', 'png'];
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 
 
     if (in_array($fileExtension, $allowedExtensions)) {
@@ -69,7 +69,10 @@
         }
     } 
     else {
-        echo "<script>alert('Unsupported photo file type.</br> Only the following upload types are allowed: " . implode(", ", $allowedExtensions) . "'); window.location.href = 'http://shop_system.com/customer/register.html'; </script>";
+        echo "<script>
+                alert('Unsupported photo file type. Only the following upload types are allowed: " . implode(", ", $allowedExtensions) . "'); 
+                window.location.href = 'http://shop_system.com/customer/register.html'; 
+            </script>";
     } 
 
 // 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 

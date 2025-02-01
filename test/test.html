@@ -1,152 +1,140 @@
+<?php
+session_start();
+$user_name = isset($_SESSION['USER_NAME']) ? $_SESSION['USER_NAME'] : null;
+$user_picture = isset($_SESSION['USER_PICTURE']) ? $_SESSION['USER_PICTURE'] : null;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>USER INFO</title>
+    <link rel="stylesheet" href="user_css/info.css">
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            background-color: #f4f4f4;
-        }
-
-        /* 左側菜單 */
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background-color: #2C3E50;
-            color: white;
-            padding-top: 20px;
-            position: fixed;
-        }
-
-        .sidebar .logo {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .sidebar ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            padding: 15px;
-            text-align: left;
-        }
-
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .sidebar ul li a:hover {
-            background-color: #34495E;
-            border-radius: 5px;
-        }
-
-        /* 主要內容區域 */
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            flex: 1;
-        }
-
-        /* 隱藏未選中的內容 */
-        .content-section {
+        /* 彈出視窗樣式 */
+        .modal {
             display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
         }
-
-        /* 顯示當前選中的區域 */
-        .active {
-            display: block;
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .modal input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+        }
+        .modal button {
+            margin-top: 10px;
+            padding: 8px 12px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <!-- 左側菜單 -->
+    <!-- 左側菜單欄 -->
     <div class="sidebar">
-        <div class="logo">
-            <h2>My Dashboard</h2>
+        <div class="user_info">
+            <img src="<?php echo "../customer/customer_img/" . $user_picture; ?>" alt="User picture" class="user_picture">
+            <span class="user_name"><?php echo htmlspecialchars($user_name); ?></span>
         </div>
         <ul>
-            <li><a href="#" data-section="home">Home</a></li>
-            <li><a href="#" data-section="user-management">User Management</a></li>
-            <li><a href="#" data-section="settings">Settings</a></li>
-            <li><a href="#" data-section="messages">Messages</a></li>
-            <li><a href="#" data-section="reports">Reports</a></li>
-            <li><a href="#" data-section="logout">Log Out</a></li>
+            <li><a href="#" data-section="my_account">My Account</a></li>
+            <li><a href="#" data-section="change_password">Change Password</a></li>
+            <li><a href="#" data-section="my_purchase">My Purchase</a></li>
+            <li><a href="#" data-section="my_product">My Product</a></li>
+            <li><a href="./logout.php">Log Out</a></li>
         </ul>
     </div>
 
     <!-- 主要內容區域 -->
     <div class="main-content">
-        <div id="home" class="content-section active">
-            <h1>Home</h1>
-            <p>Welcome to the dashboard homepage!</p>
+        <div id="my_account" class="content-section active">
+            <h1 class="my_account_title">My Account</h1>
+            <div class="user_name_wrapper">
+                <label for="user_name_field_word">User Name:</label>
+                <span class="user_name" id="user_name"><?php echo htmlspecialchars($user_name); ?></span>
+                <button id="edit_user_name">Edit</button>
+            </div>
         </div>
+    </div>
 
-        <div id="user-management" class="content-section">
-            <h1>User Management</h1>
-            <p>Manage your users here.</p>
-        </div>
-
-        <div id="settings" class="content-section">
-            <h1>Settings</h1>
-            <p>Adjust your system settings.</p>
-        </div>
-
-        <div id="messages" class="content-section">
-            <h1>Messages</h1>
-            <p>View your messages.</p>
-        </div>
-
-        <div id="reports" class="content-section">
-            <h1>Reports</h1>
-            <p>Access system reports.</p>
-        </div>
-
-        <div id="logout" class="content-section">
-            <h1>Logging Out...</h1>
-            <p>You will be redirected soon.</p>
-        </div>
+    <!-- 修改名稱的彈出視窗 -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal" id="editModal">
+        <h3>Edit User Name</h3>
+        <input type="text" id="new_user_name" placeholder="Enter new name" value="<?php echo htmlspecialchars($user_name); ?>">
+        <button id="save_user_name">Save</button>
+        <button id="close_modal">Cancel</button>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 取得所有選單按鈕
-            const menuItems = document.querySelectorAll(".sidebar ul li a");
-            // 取得所有內容區塊
-            const sections = document.querySelectorAll(".content-section");
+            const editButton = document.getElementById("edit_user_name");
+            const saveButton = document.getElementById("save_user_name");
+            const closeButton = document.getElementById("close_modal");
+            const modal = document.getElementById("editModal");
+            const overlay = document.getElementById("modalOverlay");
+            const userNameSpan = document.getElementById("user_name");
+            const newUserNameInput = document.getElementById("new_user_name");
 
-            menuItems.forEach(item => {
-                item.addEventListener("click", function(event) {
-                    event.preventDefault(); // 防止跳轉
+            // 打開彈窗
+            editButton.addEventListener("click", function() {
+                modal.style.display = "block";
+                overlay.style.display = "block";
+            });
 
-                    // 取得對應的 section ID
-                    const sectionId = this.getAttribute("data-section");
+            // 關閉彈窗
+            closeButton.addEventListener("click", function() {
+                modal.style.display = "none";
+                overlay.style.display = "none";
+            });
 
-                    // 隱藏所有內容區域
-                    sections.forEach(section => {
-                        section.classList.remove("active");
-                    });
+            // 保存新名稱
+            saveButton.addEventListener("click", function() {
+                const newUserName = newUserNameInput.value.trim();
+                if (newUserName === "") {
+                    alert("User name cannot be empty!");
+                    return;
+                }
 
-                    // 顯示被選中的內容
-                    document.getElementById(sectionId).classList.add("active");
-
-                    // 如果點擊的是 Log Out，則模擬登出（可以改為真正的登出邏輯）
-                    if (sectionId === "logout") {
-                        setTimeout(() => {
-                            alert("You have been logged out.");
-                            window.location.href = "login.html"; // 跳轉到登入頁
-                        }, 2000);
+                // 發送 AJAX 請求更新名稱
+                fetch("update_username.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "new_user_name=" + encodeURIComponent(newUserName)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        userNameSpan.textContent = newUserName; // 更新前端顯示
+                        modal.style.display = "none"; 
+                        overlay.style.display = "none"; 
+                    } else {
+                        alert("Failed to update username.");
                     }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
                 });
             });
         });
