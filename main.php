@@ -41,9 +41,9 @@ $user_picture = isset($_SESSION['USER_PICTURE']) ? $_SESSION['USER_PICTURE'] : n
                 </div>
 
                 <?php else: ?>
-                    <a class="login_word" href="customer/login.html">Login</a>
+                    <a class="login_word" href="./customer/login.html">Login</a>
                     <div class="login_register_divider">/</div>
-                    <a class="register_word" href="customer/register.html">Register</a>
+                    <a class="register_word" href="./customer/register.php">Register</a>
                 <?php endif; ?>
             </div>
             

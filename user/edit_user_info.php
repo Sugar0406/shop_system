@@ -27,13 +27,13 @@
 
                 <div class="username_word">Update user name</div>
                 <div class="username_input_container">
-                    <input class="register_user_name_input" placeholder="USER NAME" name="user_name" value=" <?php echo "$user_name" ?> " required/>
+                    <input class="register_user_name_input" placeholder="USER NAME" name="user_name" value="<?php echo trim($user_name) ?>" required/>
                 </div>
                 
 
                 <div class="email_word">Update your email (account)</div>
                 <div class="account_input_container">
-                    <input class="register_user_account_input" placeholder="EMAIL (ACCOUNT)" name="user_account" value=" <?php echo "$email" ?> " required/>
+                    <input class="register_user_account_input" placeholder="EMAIL (ACCOUNT)" name="user_account" value="<?php echo trim($email) ?>" required/>
                 </div>
                 
 
@@ -46,18 +46,18 @@
 
                 <div class="fullname_word">Update your fullname</div>
                 <div class="fullname_input_container">
-                    <input class="register_user_fullname_input" placeholder="FULLNAME" name="user_fullname" value=" <?php echo "$fullname" ?> " required/>
+                    <input class="register_user_fullname_input" placeholder="FULLNAME" name="user_fullname" value="<?php echo trim($fullname) ?>" required/>
                 </div>
 
 
                 <div class="address_word">Update your address</div>
                 <div class="address_input_container">
-                    <input class="register_user_address_input" placeholder="ADDRESS" name="user_address" value=" <?php echo "$address" ?> " required/>
+                    <input class="register_user_address_input" placeholder="ADDRESS" name="user_address" value="<?php echo trim($address) ?>" required/>
                 </div>
 
                 <div class="phone_word">Update your phone number</div>
                 <div class="phone_input_container">
-                    <input class="register_user_phone_input" placeholder="PHONE NUMBER" name="user_phone" value=" <?php echo "$phone" ?> " required/>
+                    <input class="register_user_phone_input" placeholder="PHONE NUMBER" name="user_phone" value="<?php echo trim($phone) ?>" required/>
                 </div>
 
 

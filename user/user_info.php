@@ -8,6 +8,26 @@ $address = isset($_SESSION['ADDRESS']) ? $_SESSION['ADDRESS'] : null;
 $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 ?>
 
+<!-- 查詢我的商品 -->
+<?php
+        include "../database_connect.php";
+
+        // 查詢商品資料
+        $serach_my_product_sql = "SELECT * FROM products WHERE SELLER_ID = ? ORDER BY CREATE_AT DESC"; 
+        $serach_my_product_stmt = $conn->prepare($serach_my_product_sql);
+        $serach_my_product_stmt->bind_param("s", $_SESSION['USER_ID']);  
+        $serach_my_product_stmt->execute();
+        $result = $serach_my_product_stmt->get_result();
+
+        // 取得查詢結果
+        $products = [];
+        while ($row = $result->fetch_assoc()) {
+            $products[] = $row;
+        }
+
+        $conn->close();
+?>
+
 
 
 <!DOCTYPE html>
@@ -87,7 +107,6 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 
         </div>
 
-        
 
 
 
@@ -225,8 +244,8 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
         </form>
         </div>
 
-       
-        
+
+
         <!-- My Purchase -->
         <div id="my_purchase_wrapper" class="content-section">
             <h1 class="my_purchase_title">My Purchase</h1>
@@ -234,9 +253,132 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
         </div>
 
 
+
         <!-- My Product -->
         <div id="my_product_wrapper" class="content-section">
             <h1 class="my_product_title">My Product</h1>
+
+            <!-- 新增商品按鈕 -->
+            <button onclick="redirectToAddProductPage()" class="add_product_button">ADD PRODUCT</button>
+            <script>
+                function redirectToAddProductPage() {
+                    location.href = "./add_product.php";
+                }
+            </script>
+
+            <div class="my_product_container">
+                <?php foreach ($products as $product): ?>
+                    <!-- 當 category-display="true" 的 product_card 才能被頁面按鈕顯示 -->
+                    <!-- category-display 由 search_product_category_select 腳本調控 -->
+                    <div class="product_card" >
+                        <div class="product_image_slider">
+                            <?php 
+                                // 解碼圖片陣列
+                                $images = json_decode($product['PRODUCT_IMAGE']);
+                                $totalImages = count($images);
+                            ?>
+                            <!-- 預設顯示第一張圖片 -->
+                            <img src="../product_img/<?php echo $product['PRODUCT_ID']; ?>/<?php echo $images[0]; ?>" alt="Product Image" class="product_image" data-product-id="<?php echo $product['PRODUCT_ID']; ?>" id="product_image_<?php echo $product['PRODUCT_ID']; ?>_0">
+
+                            <!-- 顯示其他圖片 -->
+                            <?php for ($i = 1; $i < $totalImages; $i++): ?>
+                                <img src="../product_img/<?php echo $product['PRODUCT_ID']; ?>/<?php echo $images[$i]; ?>" alt="Product Image" class="product_image" data-product-id="<?php echo $product['PRODUCT_ID']; ?>" id="product_image_<?php echo $product['PRODUCT_ID']; ?>_<?php echo $i; ?>" style="display:none;">
+                            <?php endfor; ?>
+                            
+                            <!-- 左右切換按鈕 -->
+                            <button class="prev" onclick="changeImage('<?php echo $product['PRODUCT_ID']; ?>', -1)">&#10094;</button>
+                            <button class="next" onclick="changeImage('<?php echo $product['PRODUCT_ID']; ?>', 1)">&#10095;</button>
+                        </div>
+
+                        <div class="product_info">
+                            <a href="product_details.php?product_id=<?php echo $product['PRODUCT_ID']; ?>" class="product_name"><?php echo htmlspecialchars($product['PRODUCT_NAME']); ?></a>
+                            <p class="product_category">Product category: <?php echo htmlspecialchars($product['CATEGORY']); ?></p>
+                            <p class="product_price">Price: $<?php echo number_format($product['PRICE']); ?></p>
+                            <p class="product_in_stock"><?php echo $product['IN_STOCK']; ?> in stock</p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <!-- 上一頁 / 下一頁按鈕 -->
+            <div class="pagination">
+                <button onclick="prevPage()">&#10094; Prev</button>
+                <button onclick="nextPage()">Next &#10095;</button>
+            </div>
+
+            <!-- 商品多圖片切換腳本 -->
+            <script>
+                function changeImage(productId, direction) {
+                    const images = document.querySelectorAll(  " [data-product-id=\"" + productId + "\"]"  )
+
+                    // const images = document.querySelectorAll("#product_image_" + productId);
+                    let currentIndex = 0;
+
+                    
+                    // 找出當前顯示的圖片索引
+                    for (let i = 0; i < images.length; i++) {
+                        if (images[i].style.display !== "none") {
+                            currentIndex = i;
+                            break;
+                        }
+                    }
+
+
+                    // 計算新的顯示索引
+                    let newIndex = currentIndex + direction;
+                    
+                    if (newIndex < 0) newIndex = images.length - 1;  // 回到最後一張
+                    if (newIndex >= images.length) newIndex = 0;     // 回到第一張
+
+                    // 隱藏當前顯示的圖片
+                    images[currentIndex].style.display = "none";
+                    // 顯示新的圖片
+                    images[newIndex].style.display = "block";
+                }
+            </script>
+            
+            <!-- 多商品頁面切換腳本(每頁僅顯示2個商品) -->
+            <script>
+                let currentPage = 0;
+                const itemsPerPage = 2;
+                const products = document.querySelectorAll(".product_card");
+
+                // 初始化，顯示第一頁的商品
+                function showPage(page) {
+                    // 確保頁數不會超出範圍
+                    const totalPages = Math.ceil(products.length / itemsPerPage);
+                    if (page < 0) page = totalPages - 1;
+                    if (page >= totalPages) page = 0;
+
+                    // 隱藏所有商品
+                    products.forEach(product => product.style.display = "none");
+
+                    // 計算當前頁面需要顯示的商品索引
+                    const start = page * itemsPerPage;
+                    const end = start + itemsPerPage;
+
+                    for (let i = start; i < end && i < products.length; i++) {
+                        products[i].style.display = "block";
+                    }
+
+                    // 更新當前頁
+                    currentPage = page;
+                }
+
+                // 切換到上一頁
+                function prevPage() {
+                    showPage(currentPage - 1);
+                }
+
+                // 切換到下一頁
+                function nextPage() {
+                    showPage(currentPage + 1);
+                }
+
+                // 初始化顯示第一頁
+                showPage(0);
+            </script>
+
         </div>
 
     </div>

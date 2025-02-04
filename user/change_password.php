@@ -63,7 +63,7 @@ if (password_verify($origin_password, $oldHashPassword_from_db)) {
             $conn ->close();
 
             echo "<script>
-                alert('Registration failed!\\nERROR: " . addslashes($update_password_stmt->error) . "');
+                alert('Update Password failed!\\nERROR: " . addslashes($update_password_stmt->error) . "');
                 window.location.href = 'http://shop_system.com/customer/register.html';
             </script>";
         }
@@ -78,7 +78,7 @@ if (password_verify($origin_password, $oldHashPassword_from_db)) {
     $conn->close();
     
     echo "<script>
-            alert('Password error!');
+            alert('Old Password error!');
             window.location.href = 'http://shop_system.com/user/user_info.php';
         </script>";
 }

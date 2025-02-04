@@ -1,128 +1,278 @@
+<!-- 商品縮圖顯示 -->
 <?php
-    // database connect
-
-
-    header("Content-Type: text/html");
-
-// 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊
-
-    // 唯一 ID生成
-    $user_id = bin2hex(random_bytes(16));
-
-    // 接收表單
-    // 前端已添加required屬性
-    $username = $_POST['user_name'];
-    $account = $_POST['user_account']; // account is user email
-    $password = $_POST['user_password'];
-    $fullname = $_POST['user_fullname'];
-    $address = $_POST['user_address'];
-    $phone = $_POST['user_phone'];
-
-    // password_hash() 生成的哈希值會包含「鹽」（salt）。鹽是隨機生成的，會使相同的輸入每次產生不同的哈希結果
-    // 驗證密碼時使用 password_verify() : password_verify($user_password, $stored_hash)
-    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-// 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 處理註冊資訊 
-
-
-
-
-// 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 
-    $photo_targetDir = "./customer_img/";
-
-    $fileTmpPath = $_FILES['user_photo']['tmp_name'];
-    $fileName = $_FILES['user_photo']['name'];
-    $fileSize = $_FILES['user_photo']['size'];
-    $fileType = $_FILES['user_photo']['type'];
-
-    // 生成唯一圖片檔名
-    $fileNameCmps = pathinfo($fileName);
-    $fileExtension = strtolower($fileNameCmps['extension']);
-    
-    $newFileName = uniqid('', true);  // 生成唯一ID
-    $newFileName = preg_replace_callback('/[^\w\-]/', function($matches) {
-        // 生成一个随机字母或数字，避免特殊字符
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        return $chars[rand(0, strlen($chars) - 1)];  // 随机选择一个字符
-    }, $newFileName);
-
-    $newFileName = $newFileName . '.' . $fileExtension;  // 添加文件扩展名
-
-    
-
-
-    // 允許上傳的檔案類型
-    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-
-
-    if (in_array($fileExtension, $allowedExtensions)) {
-        
-        // 移動圖片到目標資料夾
-        $customer_photo_destination = $photo_targetDir . $newFileName;
-
-        // alert("...") 網頁彈窗警告
-        // window.location.href = 'http:...' 輸出彈窗後 回到指定網頁;
-
-        if (move_uploaded_file($fileTmpPath, $customer_photo_destination)) {
-            
-        } else {
-            echo "<script>alert('Failed to move the file to the destination folder. Please check the permissions.'); window.location.href = 'http://shop_system.com/customer/register.html'; </script> ";
-        }
-    } 
-    else {
-        echo "<script>
-                alert('Unsupported photo file type. Only the following upload types are allowed: " . implode(", ", $allowedExtensions) . "'); 
-                window.location.href = 'http://shop_system.com/customer/register.html'; 
-            </script>";
-    } 
-
-// 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 處理上傳圖片 
-
-
-
-// sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 
-
-// sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 
-
-
-
-// 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 
-
-
-// sql 語句
-$sql = "INSERT INTO users (USER_ID, USER_NAME, EMAIL, HASH_PASSWORD, USER_PICTURE, FULL_NAME, ADDRESS, PHONE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-include "../database_connect.php";
-// 準備語句, 返回一個預處理語句對象（$stmt）
-// SQL 語句中的佔位符 ? 就會被留空，等待後續綁定參數
-$stmt = $conn->prepare($sql);
-
-// 依照$sql的順序綁定參數 : 字串符->s 整數->i 符點數->d
-$stmt->bind_param("ssssssss", $user_id, $username, $account, $hashed_password, $newFileName, $fullname, $address, $phone);
-
-
-if ($stmt->execute()) {
-    // 成功後跳轉並顯示成功訊息
-    echo "<script>
-            alert('Successful registration!\\nBack to Login page');
-            window.location.href = 'http://shop_system.com/customer/login.html';
-          </script>";
-} else {
-
-    unlink($customer_photo_destination);  // 刪除已上傳的用戶照片檔案
-
-    // 失敗後跳轉並顯示錯誤訊息
-    echo "<script>
-            alert('Registration failed!\\nERROR: " . addslashes($stmt->error) . "');
-            window.location.href = 'http://shop_system.com/customer/register.html';
-          </script>";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    previewImages();
 }
 
+function previewImages() {
+    $allowedTypes = ["image/jpeg", "image/png", "image/gif"]; // 允許的圖片格式
+    $base64Images = []; // 儲存 Base64 圖片
 
-// 關閉語句和資料庫連線
-$stmt->close();
-$conn->close();
+    if (!empty($_FILES["product_image"]["name"][0])) {
+        foreach ($_FILES["product_image"]["tmp_name"] as $key => $tmp_name) {
+            $fileType = $_FILES["product_image"]["type"][$key];
 
+            // 檢查文件格式
+            if (!in_array($fileType, $allowedTypes)) {
+                echo "<script>alert('檔案格式不支援！請上傳 JPG, PNG, GIF 格式。');</script>";
+                continue;
+            }
 
-// 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 
+            // 讀取圖片內容並轉為 Base64
+            $imageData = file_get_contents($tmp_name);
+            $base64Image = "data:$fileType;base64," . base64_encode($imageData);
+            $base64Images[] = $base64Image;
+        }
+    }
 
+    // 只顯示縮圖，不存入系統
+    if (!empty($base64Images)) {
+        echo '<div>';
+        foreach ($base64Images as $image) {
+            echo "<img src='$image' style='width: 100px; height: 100px; object-fit: cover; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);'>";
+        }
+        echo "</div>";
+    }
+}
 ?>
+
+
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <title>REGISTER</title>
+        <link rel="stylesheet" type="text/css" href="./customer_css/register.css">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    </head>
+
+    <body>
+        <div class="register_wrapper">
+            <div class="register_word">REGISTER</div>
+
+            <!-- enctype 設定為 multipart/form-data 打開文件上傳功能 -->
+            <form id="register_form" action="./upload_register.php" method="POST" enctype="multipart/form-data">
+
+                <div class="username_word">Input user name</div>
+                <div class="username_input_container">
+                    <input class="register_user_name_input" placeholder="USER NAME" name="user_name" required />
+                </div>
+                
+
+                <div class="email_word">Input your email (account)</div>
+                <div class="account_input_container">
+                    <input class="register_user_account_input" placeholder="EMAIL (ACCOUNT)" name="user_account" required />
+                </div>
+
+                
+                <div class="password_word">Input your password</div>
+                <div class="password_input_container">
+                    <input id="register_user_password_input" class="register_user_password_input" placeholder="PASSWORD" type="password" name="user_password" required/>
+
+                    <!-- 將 show_passwords_button 的 <button> 標籤 type 設置為 "button"，避免它默認成為提交按鈕。 -->
+                    <button id="show_passwords_button" class="show_passwords_button" type="button">
+                        <i id="password_button_icon" class="fa-solid fa-eye-slash"></i>
+                    </button>
+                </div>
+
+
+                <div class="confirm_password_word">Confirm your password</div>
+                <div class="confirm_password_input_container">
+                    <input id="register_user_confirm_password_input" class="register_user_confirm_password_input" placeholder="PASSWORD" type="password" name="user_confirm_password" required/>
+
+                    <!-- 將 show_passwords_button 的 <button> 標籤 type 設置為 "button"，避免它默認成為提交按鈕。 -->
+                    <button id="show_confirm_passwords_button" class="show_confirm_passwords_button" type="button">
+                        <i id="confirm_password_button_icon" class="fa-solid fa-eye-slash"></i>
+                    </button>
+                </div>
+                
+
+                <div class="photo_word">Upload your user photo</div>
+
+                <!-- 顯示縮略圖 -->
+                <div id="preview_container" class="preview_container"></div>
+
+                <div class="photo_input_container">
+                    <input id="register_user_photo_input" class="register_user_photo_input" placeholder="" name="user_photo" accept="image/*" type="file" required/>
+                </div>
+
+                <!-- 顯示縮略圖腳本 -->
+                <script>
+                    document.getElementById("register_user_photo_input").addEventListener("change", function(event) {
+                        let previewContainer = document.getElementById("preview_container");
+                        previewContainer.innerHTML = ""; // 清空之前的預覽
+                        let files = event.target.files;
+
+                        if (files.length > 0) {
+                            for (let i = 0; i < files.length; i++) {
+                                let file = files[i];
+
+                                // 確保是圖片格式
+                                if (file.type.startsWith("image/")) {
+                                    let reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        let img = document.createElement("img");
+                                        img.src = e.target.result;
+                                        img.style.width = "50px";
+                                        img.style.height = "50px";
+                                        img.style.objectFit = "cover";
+                                        img.style.borderRadius = "10px";
+                                        img.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+                                        previewContainer.appendChild(img);
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                            }
+                        }
+                    });
+                </script>
+
+
+
+                <div class="fullname_word">Input your fullname</div>
+                <div class="fullname_input_container">
+                    <input class="register_user_fullname_input" placeholder="FULLNAME" name="user_fullname" required />
+                </div>
+
+
+
+                <div class="address_word">Input your address</div>
+                <div class="address_input_container">
+                    <input class="register_user_address_input" placeholder="ADDRESS" name="user_address" required />
+                </div>
+
+                <div class="phone_word">Input your phone number</div>
+                <div class="phone_input_container">
+                    <input class="register_user_phone_input" placeholder="PHONE NUMBER" name="user_phone" required />
+                </div>
+
+
+                <div class="register_button_container">
+                    <!-- submit:如果按鈕被點擊 表單執行相對應的操作(定義在action) -->                    
+                    <button id="register_button" class="register_button" type="submit">CREATE ACCOUNT</button>
+                </div>
+
+            </form>
+
+
+
+            <!-- 暫時顯示密碼 (Input password 欄位)-->
+            <script>
+                const togglePassword = document.getElementById("register_user_password_input")
+                const showPasswordButton = document.getElementById("show_passwords_button")
+                const password_btn_icon = document.getElementById("password_button_icon")
+
+
+
+                //指標按下時 顯示密碼(將type改為text)
+                showPasswordButton.addEventListener('mousedown', function () {
+
+                    event.preventDefault(); // 阻止按鈕默認行為
+                    togglePassword.type = "text";
+
+                    // 切換圖標
+                    password_btn_icon.classList.remove('fa-eye-slash'); // 移除隱藏圖標
+                    password_btn_icon.classList.add('fa-eye'); // 顯示密碼圖標
+                    
+                });
+
+                //指標鬆開時 隱藏密碼(將type改回password)
+                showPasswordButton.addEventListener('mouseup', function () {
+                    event.preventDefault(); // 阻止按鈕默認行為
+                    togglePassword.type = "password";
+
+                    password_btn_icon.classList.remove('fa-eye'); // 移除顯示圖標
+                    password_btn_icon.classList.add('fa-eye-slash'); // 隱藏密碼圖標
+                })
+
+                // 處理按鈕的 "mouseleave"（防止滑出按鈕時圖標狀態不正確）
+                showPasswordButton.addEventListener('mouseleave', function () {
+                    togglePassword.type = "password";
+                    password_btn_icon.classList.remove('fa-eye');
+                    password_btn_icon.classList.add('fa-eye-slash');
+                });
+            </script>
+
+
+            <!-- 暫時顯示密碼 (confirm password 欄位) -->
+            <script>
+                const toggleConfirmPassword = document.getElementById("register_user_confirm_password_input")
+                const showConfirmPasswordButton = document.getElementById("show_confirm_passwords_button")
+                const confirm_password_btn_icon = document.getElementById("confirm_password_button_icon")
+
+
+
+                //指標按下時 顯示密碼(將type改為text)
+                showConfirmPasswordButton.addEventListener('mousedown', function () {
+
+                    event.preventDefault(); // 阻止按鈕默認行為
+                    toggleConfirmPassword.type = "text";
+
+                    // 切換圖標
+                    confirm_password_btn_icon.classList.remove('fa-eye-slash'); // 移除隱藏圖標
+                    confirm_password_btn_icon.classList.add('fa-eye'); // 顯示密碼圖標
+                    
+                });
+
+                //指標鬆開時 隱藏密碼(將type改回password)
+                showConfirmPasswordButton.addEventListener('mouseup', function () {
+                    event.preventDefault(); // 阻止按鈕默認行為
+                    toggleConfirmPassword.type = "password";
+
+                    confirm_password_btn_icon.classList.remove('fa-eye'); // 移除顯示圖標
+                    confirm_password_btn_icon.classList.add('fa-eye-slash'); // 隱藏密碼圖標
+                })
+
+                // 處理按鈕的 "mouseleave"（防止滑出按鈕時圖標狀態不正確）
+                showConfirmPasswordButton.addEventListener('mouseleave', function () {
+                    toggleConfirmPassword.type = "password";
+                    confirm_password_btn_icon.classList.remove('fa-eye');
+                    confirm_password_btn_icon.classList.add('fa-eye-slash');
+                });
+            </script>
+
+
+            <!-- 確保兩次輸入的密碼相同 -->
+            <script>
+                // 當 HTML 完全加載並解析後，執行 JavaScript 程式碼
+                document.addEventListener("DOMContentLoaded", function () {
+                    
+                    const form = document.getElementById("register_form");
+                    const register_btn = document.getElementById("register_button");
+                    const password = document.getElementById("register_user_password_input");
+                    const confirm_password = document.getElementById("register_user_confirm_password_input");
+                    const required_fields = document.querySelectorAll("[required]");
+
+
+                    form.addEventListener('submit', function (event) {
+                        // 確保所有欄位都已填寫才驗證密碼
+                        for (let field of required_fields) {
+                            if (!field.value.trim()) {
+                                alert("Please fill in all required fields.");
+                                field.focus();  // 將焦點移到第一個未填寫的欄位
+                                event.preventDefault(); // 阻止表單提交
+                                return false;
+                            }
+                        }
+
+
+                        // 驗證兩次密碼相同
+                        if (password.value !== confirm_password.value) {
+                            alert("The passwords you entered twice are different. Please confirm your password again.");
+                            confirm_password.focus();  // 將焦點移到確認密碼輸入框
+                            event.preventDefault(); // 阻止表單提交
+                            return false;
+                        }
+                    });
+                });
+            </script>
+
+
+
+        </div>
+
+    </body>
+
+</html>

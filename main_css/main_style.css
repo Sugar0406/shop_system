@@ -108,6 +108,7 @@ html, body {
 .user_picture{
     width: auto;
     height: 50px;
+    border-radius: 5px;
 }
 
 
