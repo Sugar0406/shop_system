@@ -1,0 +1,308 @@
+html{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100%
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;  
+
+    /* 當網頁大小小於該數字時 不會在縮放元件 (避免暴版) */
+    min-width: 800px;
+    min-height: 1000px;
+    background-color: rgb(239, 239, 239);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+}
+
+
+
+.edit_product_info_wrapper {
+    width: 500px;
+    height: 100%;
+    background-color: white;
+    /* border-radius: 10px; */ /* 圓弧角度 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: start;
+}
+
+.edit_product_info_word {
+    font-family: Verdana, sans-serif;
+    font-size: 30px;
+    color: black;
+    margin: 10px 0px 25px 0px;
+}
+
+
+
+/* product_name product_name product_name product_name product_name product_name product_name product_name product_name product_name */
+
+.edit_product_name_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.edit_product_name_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.edit_product_name_input {
+    width: 100%; /* 保持相同寬度 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; /* 確保垂直間距一致 */
+}
+.edit_product_name_input::placeholder {
+    color: #999;
+}
+
+/* product_name product_name product_name product_name product_name product_name product_name product_name product_name product_name */
+
+
+
+/* product_image product_image product_image product_image product_image product_image product_image product_image product_image product_image */
+
+.edit_product_image_wrapper{
+    padding : 5px;
+}
+
+.edit_product_image_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.hint_photo_word{
+    font-family: Verdana, sans-serif;
+    font-size: 13px;
+    color: red;
+    margin : 5px 0px 0px 0px;
+}
+
+.edit_product_image_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.edit_product_image_input {
+    width: 100%; /* 保持相同寬度 */
+    /* padding: 0.5rem; */
+    font-size: 14px;
+    /*border: 1px solid #ccc;*/
+    /*border-radius: 4px;*/
+    outline: none;
+    margin: 10px 0; /* 確保垂直間距一致 */
+}
+.edit_product_image_input::placeholder {
+    color: #999;
+}
+
+.preview_container {
+    display: flex; 
+    flex-wrap: wrap; 
+    /* justify-content: center; */
+    gap: 10px; 
+
+}
+
+/* product_image product_image product_image product_image product_image product_image product_image product_image product_image product_image */
+
+
+
+/* product_price product_price product_price product_price product_price product_price product_price product_price product_price */
+
+.edit_product_price_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.edit_product_price_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.edit_product_price_input {
+    width: 100%; /* 保持相同寬度 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; /* 確保垂直間距一致 */
+}
+.edit_product_price_input::placeholder {
+    color: #999;
+}
+
+/* product_price product_price product_price product_price product_price product_price product_price product_price product_price */
+
+
+
+/* product_in_stock product_in_stock product_in_stock product_in_stock product_in_stock product_in_stock product_in_stock product_in_stock */
+
+.edit_in_stock_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.edit_in_stock_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.edit_in_stock_input {
+    width: 100%; /* 保持相同寬度 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; /* 確保垂直間距一致 */
+}
+.edit_in_stock_input::placeholder {
+    color: #999;
+}
+
+
+/* product_in_stock product_in_stock product_in_stock product_in_stock product_in_stock product_in_stock product_in_stock product_in_stock */
+
+
+
+/* product_description product_description product_description product_description product_description product_description product_description */
+
+.edit_description_wrapper{
+    padding : 5px;
+}
+
+.edit_description_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.edit_description_input_container{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.edit_description_textarea {
+    width: 100%; /* 保持相同寬度 */
+    height: 130px;
+    resize: none; /* 使textarea不可調整大小 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; /* 確保垂直間距一致 */
+}
+.edit_description_input::placeholder {
+    color: #999;
+}
+
+/* product_description product_description product_description product_description product_description product_description product_description */
+
+
+
+/* product_category product_category product_category product_category product_category product_category product_category product_category */
+
+.edit_product_name_wrapper{
+    padding: 5px;
+}
+
+.edit_product_category_word{
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+    color: black;
+
+}
+
+.edit_product_category {
+    width: 100%; /* 保持相同寬度 */
+    resize: none; /* 使textarea不可調整大小 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin: 10px 0; /* 確保垂直間距一致 */
+}
+
+/* product_category product_category product_category product_category product_category product_category product_category product_category */
+
+
+
+
+
+
+
+
+
+
+
+
+.edit_button_container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* 確保容器寬度與帳號輸入框一致 */
+    margin: 0px 0px 20px 0px; /* 保持垂直間距一致 */
+}
+
+.edit_button{
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+
+}

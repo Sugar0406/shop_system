@@ -8,6 +8,46 @@
     $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 ?>
 
+
+<!-- 商品縮圖顯示 -->
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    previewImages();
+}
+
+function previewImages() {
+    $allowedTypes = ["image/jpeg", "image/png", "image/gif"]; // 允許的圖片格式
+    $base64Images = []; // 儲存 Base64 圖片
+
+    if (!empty($_FILES["product_image"]["name"][0])) {
+        foreach ($_FILES["product_image"]["tmp_name"] as $key => $tmp_name) {
+            $fileType = $_FILES["product_image"]["type"][$key];
+
+            // 檢查文件格式
+            if (!in_array($fileType, $allowedTypes)) {
+                echo "<script>alert('檔案格式不支援！請上傳 JPG, PNG, GIF 格式。');</script>";
+                continue;
+            }
+
+            // 讀取圖片內容並轉為 Base64
+            $imageData = file_get_contents($tmp_name);
+            $base64Image = "data:$fileType;base64," . base64_encode($imageData);
+            $base64Images[] = $base64Image;
+        }
+    }
+
+    // 只顯示縮圖，不存入系統
+    if (!empty($base64Images)) {
+        echo '<div>';
+        foreach ($base64Images as $image) {
+            echo "<img src='$image' style='width: 100px; height: 100px; object-fit: cover; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);'>";
+        }
+        echo "</div>";
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html>
     <head lang="en">
@@ -37,11 +77,52 @@
                 </div>
                 
 
+
                 <div class="photo_word">Update your user photo</div>
-                <div class="hint_photo_word">HINT : If you don't want to update the photo. Don't select any image. </div>
+                <div id="hint_photo_word" class="hint_photo_word">HINT : If you don't want to update the photo. Don't select any image. </div>
+
+                <!-- 顯示縮略圖 -->
+                <div id="preview_container" class="preview_container"></div>
+
                 <div class="photo_input_container">
                     <input id="register_user_photo_input" class="register_user_photo_input" placeholder="" name="user_photo" accept="image/*" type="file" />
                 </div>
+                
+                <!-- 顯示縮略圖腳本 -->
+                <script>
+                    document.getElementById("register_user_photo_input").addEventListener("change", function(event) {
+                        let previewContainer = document.getElementById("preview_container");
+                        previewContainer.innerHTML = ""; // 清空之前的預覽
+                        let files = event.target.files;
+
+                        if (files.length > 0) {
+                            for (let i = 0; i < files.length; i++) {
+                                let file = files[i];
+
+                                // 確保是圖片格式
+                                if (file.type.startsWith("image/")) {
+                                    let reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        let img = document.createElement("img");
+                                        img.src = e.target.result;
+                                        img.style.width = "50px";
+                                        img.style.height = "50px";
+                                        img.style.objectFit = "cover";
+                                        img.style.borderRadius = "10px";
+                                        img.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+                                        previewContainer.appendChild(img);
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                            }
+                        }
+
+                        // 有照片輸入 刪除hint
+                        let hint = document.getElementById("hint_photo_word");
+                        hint.remove();
+                    });
+                </script>
+
 
 
                 <div class="fullname_word">Update your fullname</div>

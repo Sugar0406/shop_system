@@ -100,9 +100,27 @@ html, body {
     height: 50%;
 }
 
+
+.cart_button {
+    font-size: 20px;
+    color: #333;
+    text-decoration: none;
+    margin-top: 3px;
+    margin-right: 15px;
+}
+
+.cart_button i {
+    transition: color 0.3s ease;
+}
+
+.cart_button:hover i {
+    color: coral;
+}
+
+
 .user_name{
     font-family: Verdana, sans-serif;
-    margin: 10px;
+    margin-right: 15px;
 }
 
 .user_picture{

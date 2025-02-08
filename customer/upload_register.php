@@ -80,12 +80,6 @@
 
 
 
-// sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 
-
-// sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 sql_injection_防護 
-
-
-
 // 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 連接mysql 
 
 
@@ -108,16 +102,32 @@ if ($stmt->execute()) {
             window.location.href = 'http://shop_system.com/customer/login.html';
         </script>";
 } else {
-
     unlink($customer_photo_destination);  // 刪除已上傳的用戶照片檔案
 
-    // 失敗後跳轉並顯示錯誤訊息
+    // 獲取 MySQL 錯誤碼
+    $error_code = $stmt->errno;
+    $error_msg = addslashes($stmt->error);
+
+    // 1062為UNIQUE error 代號
+    if ($error_code == 1062) {
+        // 檢查錯誤訊息是否包含 USER_NAME 或 EMAIL
+        if (strpos($error_msg, 'USER_NAME') !== false) {
+            $error_message = "User name already exists!";
+        } elseif (strpos($error_msg, 'EMAIL') !== false) {
+            $error_message = "Email already exists!";
+        } else {
+            $error_message = "Duplicate entry!";
+        }
+    } else {
+        $error_message = "Registration failed!\\nERROR: $error_msg";
+    }
+
+    // 顯示錯誤訊息並跳轉回註冊頁面
     echo "<script>
-            alert('Registration failed!\\nERROR: " . addslashes($stmt->error) . "');
+            alert('$error_message');
             window.location.href = 'http://shop_system.com/customer/register.php';
         </script>";
 }
-
 
 // 關閉語句和資料庫連線
 $stmt->close();

@@ -55,13 +55,84 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 
             <!-- logout 直接跳轉 不需要section -->
             <li><a href="./logout.php" >Log Out</a></li>
+            <!-- 刪除帳號 -->
+            <li><a href="#delete_account" data-section="delete_account_wrapper">Delete Account</a></li>
         </ul>
     </div>
+
+
+    <!-- 單頁跳轉實現 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 取得所有選單按鈕
+            const menuItems = document.querySelectorAll(".sidebar ul li a");
+            // 取得所有內容區塊
+            const sections = document.querySelectorAll(".content-section");
+
+            function hideAllSections() {
+                sections.forEach(section => {
+                    section.classList.remove("active");
+                });
+            }
+
+            // 檢查 URL hash，並顯示對應區塊
+            function checkHash() {
+                const hash = window.location.hash.substring(1); // 去掉 #
+                if (hash) {
+                    const targetSection = document.getElementById(hash + "_wrapper"); // 修正選擇器
+                    if (targetSection) {
+                        hideAllSections();
+                        targetSection.classList.add("active");
+                    }
+                }
+            }
+
+            // 監聽選單按鈕點擊事件
+            menuItems.forEach(item => {
+                item.addEventListener("click", function(event) {
+                    const sectionId = this.getAttribute("data-section");
+
+                    // 如果是 Log Out，允許直接跳轉，不攔截點擊事件
+                    if (!sectionId) {
+                        alert("Logout Successfully");
+                        return; 
+                    }
+
+                    event.preventDefault(); // 防止預設行為影響 hash 更新
+
+                    // 更新網址 hash
+                    window.location.hash = sectionId.replace("_wrapper", ""); 
+
+                    // 立即執行 checkHash，確保 active 類別即時更新
+                    checkHash();
+                });
+            });
+
+            // 在頁面載入時檢查 hash
+            checkHash();
+
+            // 監聽 hash 變化（如果用戶手動修改 hash）
+            window.addEventListener("hashchange", checkHash);
+        });
+
+    </script>
+
+
+
+
+
+
+
+
 
     <!-- 主要內容區域 -->
     <div class="main-content">
 
-        <!-- My Account -->
+
+
+
+
+        <!-- My Account My Account My Account My Account My Account My Account My Account My Account My Account My Account My Account My Account  -->
         <div id="my_account_wrapper" class="content-section active">
             <h1 class="my_account_title">Basic Information</h1>
             
@@ -110,7 +181,8 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 
 
 
-        <!-- Change Password -->
+
+        <!-- Change Password Change Password Change Password Change Password Change Password Change Password Change Password Change Password Change Password -->
         <div id="change_password_wrapper" class="content-section">
         <form id="change_password" action="./change_password.php" method="POST">
             <h1 class="change_password_title">Change Password</h1>
@@ -246,15 +318,18 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 
 
 
-        <!-- My Purchase -->
+
+
+        <!-- My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase  -->
         <div id="my_purchase_wrapper" class="content-section">
             <h1 class="my_purchase_title">My Purchase</h1>
-
         </div>
 
 
 
-        <!-- My Product -->
+
+
+        <!-- My Product My Product My Product My Product My Product My Product My Product My Product My Product My Product My Product My Product My Product -->
         <div id="my_product_wrapper" class="content-section">
             <h1 class="my_product_title">My Product</h1>
 
@@ -268,8 +343,7 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 
             <div class="my_product_container">
                 <?php foreach ($products as $product): ?>
-                    <!-- 當 category-display="true" 的 product_card 才能被頁面按鈕顯示 -->
-                    <!-- category-display 由 search_product_category_select 腳本調控 -->
+
                     <div class="product_card" >
                         <div class="product_image_slider">
                             <?php 
@@ -291,20 +365,40 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
                         </div>
 
                         <div class="product_info">
-                            <a href="product_details.php?product_id=<?php echo $product['PRODUCT_ID']; ?>" class="product_name"><?php echo htmlspecialchars($product['PRODUCT_NAME']); ?></a>
+                            
+                            <a href="../product/product_details.php?product_id=<?php echo $product['PRODUCT_ID']; ?>" class="product_name"><?php echo htmlspecialchars($product['PRODUCT_NAME']); ?></a>
+
                             <p class="product_category">Product category: <?php echo htmlspecialchars($product['CATEGORY']); ?></p>
                             <p class="product_price">Price: $<?php echo number_format($product['PRICE']); ?></p>
                             <p class="product_in_stock"><?php echo $product['IN_STOCK']; ?> in stock</p>
+
+                            <div class="product_button_container">
+                                <button class="edit_product_button" onclick="redirectToEditProductInfo('<?php echo $product['PRODUCT_ID']; ?>')">Edit Product Info</button>
+                                <button class="delete_product_button" onclick="redirectToDeleteProduct('<?php echo $product['PRODUCT_ID']; ?>')">Delete Product</button>
+                                <script>
+                                    function redirectToEditProductInfo(productId){
+                                        window.location.href = "../product/edit_product_info.php?product_id=" + encodeURIComponent(productId);
+                                    }
+                                    function redirectToDeleteProduct(productId){
+                                        if (confirm("Are you sure to delete this product?")) {
+                                            window.location.href = "../product/delete_product.php?product_id=" + encodeURIComponent(productId);
+                                        }
+                                    }
+                                </script>
+                            </div>
+
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
 
+
             <!-- 上一頁 / 下一頁按鈕 -->
             <div class="pagination">
-                <button onclick="prevPage()">&#10094; Prev</button>
-                <button onclick="nextPage()">Next &#10095;</button>
+                <button id="prevBtn" onclick="prevPage()">&#10094; Prev</button>
+                <button id="nextBtn" onclick="nextPage()">Next &#10095;</button>
             </div>
+
 
             <!-- 商品多圖片切換腳本 -->
             <script>
@@ -336,7 +430,7 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
                     images[newIndex].style.display = "block";
                 }
             </script>
-            
+
             <!-- 多商品頁面切換腳本(每頁僅顯示2個商品) -->
             <script>
                 let currentPage = 0;
@@ -378,44 +472,17 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
                 // 初始化顯示第一頁
                 showPage(0);
             </script>
-
         </div>
 
+
+
+
+
+    <!-- Delete Account Delete Account Delete Account Delete Account Delete Account Delete Account Delete Account Delete Account Delete Account Delete Account -->
+    <div id="delete_account_wrapper" class="content-section">
+        <h1 class="delete_account_title">Delete Account</h1>
+
     </div>
-
-
-    <!-- 單頁跳轉實現 -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // 取得所有選單按鈕
-            const menuItems = document.querySelectorAll(".sidebar ul li a");
-            // 取得所有內容區塊
-            const sections = document.querySelectorAll(".content-section");
-
-            menuItems.forEach(item => {
-                item.addEventListener("click", function(event) {
-            
-                    const sectionId = this.getAttribute("data-section");
-
-                    // 如果是 Log Out，允許直接跳轉，不攔截點擊事件
-                    if (!sectionId) {
-                        alert("Logout Successfully");
-                        return; 
-                    }
-
-                    event.preventDefault(); // 防止頁面重新載入
-
-                    // 隱藏所有內容區塊
-                    sections.forEach(section => {
-                        section.classList.remove("active");
-                    });
-
-                    // 顯示被選中的內容
-                    document.getElementById(sectionId).classList.add("active");
-                });
-            });
-        });
-    </script>
 
 
 </body>

@@ -15,6 +15,20 @@
     $description = $_POST["description"];
     $category = $_POST["category"];
 
+    // 驗證庫存和價格均需要大於0
+    if ($in_stock <= 0) {
+        echo "<script>
+            alert('Stock quantity must be greater than 0');
+            window.location.href = 'http://shop_system.com/user/add_product.php';
+        </script>";
+    }
+    if ($price <= 0) {
+        echo "<script>
+            alert('Price must be greater than 0');
+            window.location.href = 'http://shop_system.com/user/add_product.php';
+        </script>";
+    }
+
     // 測試
     // echo "product_id=" . $product_id . "<br>";
     // echo "&product_name=". $product_name . "<br>";

@@ -15,6 +15,8 @@ $user_picture = isset($_SESSION['USER_PICTURE']) ? $_SESSION['USER_PICTURE'] : n
         <title>E-SHOP SYSTEM</title>
         <link rel="stylesheet" type="text/css" href="main_css/main_style.css">
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
         <!-- 寬度為裝置寬度 縮放為1倍 -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     
@@ -34,11 +36,13 @@ $user_picture = isset($_SESSION['USER_PICTURE']) ? $_SESSION['USER_PICTURE'] : n
             <div class="login_register_wrapper">
                 <!-- 如果用戶已登入，顯示使用者名稱和頭像 -->
                 <?php if ($user_name && $user_picture): ?>
-                <div class="user_info">
-                    <a href="http://shop_system.com/user/user_info.php" class="user_name"><?php echo $user_name; ?></a>
-                    <img src="<?php echo  "./customer/customer_img/" . $user_picture; ?>" alt="User picture" class="user_picture">
-                    
-                </div>
+                    <div class="user_info">
+                        <a href="./shopping_cart.php" class="cart_button">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+                        <a href="http://shop_system.com/user/user_info.php#my_account" class="user_name"><?php echo $user_name; ?></a>
+                        <img src="<?php echo  "./customer/customer_img/" . $user_picture; ?>" alt="User picture" class="user_picture">
+                    </div>
 
                 <?php else: ?>
                     <a class="login_word" href="./customer/login.html">Login</a>

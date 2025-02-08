@@ -46,7 +46,7 @@ function previewImages() {
 <!-- 頁面html -->
 <html>
     <head>
-        <title>ADD PRODUCT</title>
+        <title>EDIT PRODUCT INFO</title>
         <link rel="stylesheet" type="text/css" href="./user_css/add_product.css">
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
