@@ -43,6 +43,16 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 
     <!-- 左側菜單欄 -->
     <div class="sidebar">
+        <div calss="back_to_home_page_wrapper">
+            <button onclick="redirectToMainPage()" class="back_to_main_button">&#8636; Back</button>
+        </div>
+        <script>
+            function redirectToMainPage() {
+                window.location.href = "http://shop_system.com";
+            }
+        </script>
+
+        <!-- 左側菜單欄 使用者展示 -->
         <div class="user_info">
             <img src="<?php echo  "../customer/customer_img/" . $user_picture; ?>" alt="User picture" class="user_picture">
             <span class="user_name"><?php echo $user_name; ?></span>

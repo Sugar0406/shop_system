@@ -101,6 +101,7 @@
         // product ID 重複
         echo "<script>
             alert('There is something error! Please try again later');
+            window.location.href = 'http://shop_system.com/user/add_product.php';
         </script>";
     }
     
@@ -145,14 +146,14 @@
         $conn->close();
         echo "<script>
             alert('Product created successfully!');
-            window.location.href = 'http://shop_system.com/user/user_info.php';
+            window.location.href = 'http://shop_system.com/user/user_info.php#my_product';
         </script>";
     }
     else{
         $conn->close();
         echo "<script>
             alert('Error creating product! Please try again later.');
-            window.location.href = 'http://shop_system.com/user/add_product.php';
+            window.location.href = 'http://shop_system.com/user/add_product.php#my_product';
         </script>";
     };
 

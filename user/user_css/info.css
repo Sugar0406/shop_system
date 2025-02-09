@@ -33,6 +33,13 @@ body {
 
 }
 
+.back_to_main_button{
+    border: none;
+    background-color:  rgb(150, 150, 150); /* 和菜單欄背景同色 */
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+}
+
 
 
 /* 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單 左側菜單  */
