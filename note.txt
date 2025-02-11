@@ -1,2 +1,43 @@
 web網址 : http://shop_system.com
 mysql phpmyadmin : http://localhost/phpmyadmin
+
+ACC1 max@gmail.com ; 123
+ACC2 max2@gmail.com ; 456
+
+css統一字體 
+font-family: Verdana, sans-serif;
+
+Session
+$_SESSION["USER_ID"] = $user_id_from_db;
+$_SESSION["USER_NAME"] = $user_name_from_db;
+$_SESSION["EMAIL"] = $email_from_db;
+$_SESSION["USER_PICTURE"] = $user_picture_from_db;
+$_SESSION["FULL_NAME"] = $full_name_from_db;
+$_SESSION["ADDRESS"] = $address_from_db;
+$_SESSION["PHONE"] = $phone_from_db;
+
+$_FILE
+fileTmpPath : D:\XAMPP\tmp\phpC78D.tmp
+fileName : 9d5607fac85397596e10f29c7e77f63db4e827d224bfe5-uXlGmk_fw658 - 複製.gif
+fileSize : 2408611
+fileType : image/gif
+
+
+商品分類
+<option value="" selected disabled>Select a category</option>
+<option value="Electronics & Accessories">Electronics & Accessories</option>
+<option value="Home Appliances & Living Essentials">Home Appliances & Living Essentials</option>
+<option value="Clothing & Accessories">Clothing & Accessories</option>
+<option value="Beauty & Personal Care">Beauty & Personal Care</option>
+<option value="Food & Beverages">Food & Beverages</option>
+<option value="Home & Furniture">Home & Furniture</option>
+<option value="Sports & Outdoor Equipment">Sports & Outdoor Equipment</option>
+<option value="Automotive & Motorcycle Accessories">Automotive & Motorcycle Accessories</option>
+<option value="Baby & Maternity Products">Baby & Maternity Products</option>
+<option value="Books & Office Supplies">Books & Office Supplies</option>
+<option value="Other">Other</option>
+
+
+next job
+product detail description尚未加入
+訂單系統資料表
