@@ -171,7 +171,7 @@
 <html>
     <head>
         <title>E-SHOP SYSTEM</title>
-        <link rel="stylesheet" type="text/css" href="main_css/main_style.css">
+        <link rel="stylesheet" type="text/css" href="./main_style.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
@@ -185,7 +185,7 @@
 
         <!-- main banner -->
         <div class="main_banner">
-            <div class="main_banner_title">E-shop system</div>
+            <div class="main_banner_title" onclick="window.location.href='./main.php'">E-shop system</div>
 
             <div class="inputbar_button_wrapper">
                 <input class="eshop_search_bar"/>
@@ -219,56 +219,50 @@
 
             <!-- 分類選取 -->
             <div class="search_product_by_category_section">
-                <div class="search_product_by_category_title">Search Products by Category</div>
-                <select class="search_product_by_category_selection" id="search_product_by_category_selection">
-                    <option value="All category" <?php if ($product_category == 'All category') echo'selected';?>>All category</option>
-                    <option value="Electronics & Accessories" <?php if ($product_category == 'Electronics & Accessories') echo 'selected'; ?>>Electronics & Accessories</option>
-                    <option value="Home Appliances & Living Essentials" <?php if ($product_category == 'Home Appliances & Living Essentials') echo 'selected'; ?>>Home Appliances & Living Essentials</option>
-                    <option value="Clothing & Accessories" <?php if ($product_category == 'Clothing & Accessories') echo 'selected'; ?>>Clothing & Accessories</option>
-                    <option value="Beauty & Personal Care" <?php if ($product_category == 'Beauty & Personal Care') echo 'selected'; ?>>Beauty & Personal Care</option>
-                    <option value="Food & Beverages" <?php if ($product_category == 'Food & Beverages') echo 'selected'; ?>>Food & Beverages</option>
-                    <option value="Home & Furniture" <?php if ($product_category == 'Home & Furniture') echo 'selected'; ?>>Home & Furniture</option>
-                    <option value="Sports & Outdoor Equipment" <?php if ($product_category == 'Sports & Outdoor Equipment') echo 'selected'; ?>>Sports & Outdoor Equipment</option>
-                    <option value="Automotive & Motorcycle Accessories" <?php if ($product_category == 'Automotive & Motorcycle Accessories') echo 'selected'; ?>>Automotive & Motorcycle Accessories</option>
-                    <option value="Baby & Maternity Products" <?php if ($product_category == 'Baby & Maternity Products') echo 'selected'; ?>>Baby & Maternity Products</option>
-                    <option value="Books & Office Supplies" <?php if ($product_category == 'Books & Office Supplies') echo 'selected'; ?>>Books & Office Supplies</option>
-                    <option value="Other" <?php if ($product_category == 'Other') echo 'selected'; ?>>Other</option>
-                </select>
-
-                <!-- 分類腳本 -->
-                <script>
-                    document.getElementById('search_product_by_category_selection').addEventListener('change', function() {
-                        var selectedCategory = this.value; 
-                        var currentUrl = window.location.href; 
-                        var newUrl = new URL(currentUrl); 
-
-                        // 檢查是否已經有 selected_category 參數，若有則更新它，否則新增
-                        if (newUrl.searchParams.has('selected_category')) {
-                            newUrl.searchParams.set('selected_category', selectedCategory);
-                        } 
-                        else {
-                            newUrl.searchParams.append('selected_category', selectedCategory);
-                        }
-
-                        // 檢查是否已經有 page 參數，設定為第一頁
-                        if (newUrl.searchParams.has('page')) {
-                            newUrl.searchParams.set('page', 1);
-                        }
-                        else{
-                            newUrl.searchParams.append('page', 1);
-                        }
-
-
-                        window.location.href = newUrl.toString();
-                    });
-                </script>
+                <button class="category-btn" onclick="redirectToCategory('All category')"><i class="fa-solid fa-bars"></i> All category</button>
+                <button class="category-btn" onclick="redirectToCategory('Electronics & Accessories')"><i class="fa-solid fa-tv"></i> Electronics & Accessories</button>
+                <button class="category-btn" onclick="redirectToCategory('Home Appliances & Living Essentials')"><i class="fa-solid fa-couch"></i> Home Appliances & Living Essentials</button>
+                <button class="category-btn" onclick="redirectToCategory('Clothing & Accessories')"><i class="fa-solid fa-shirt"></i> Clothing & Accessories</button>
+                <button class="category-btn" onclick="redirectToCategory('Beauty & Personal Care')"><i class="fa-solid fa-pump-soap"></i> Beauty & Personal Care</button>
+                <button class="category-btn" onclick="redirectToCategory('Food & Beverages')"><i class="fa-solid fa-utensils"></i> Food & Beverages</button>
+                <button class="category-btn" onclick="redirectToCategory('Home & Furniture')"><i class="fa-solid fa-bed"></i> Home & Furniture</button>
+                <button class="category-btn" onclick="redirectToCategory('Sports & Outdoor Equipment')"><i class="fa-solid fa-football"></i> Sports & Outdoor Equipment</button>
+                <button class="category-btn" onclick="redirectToCategory('Automotive & Motorcycle Accessories')"><i class="fa-solid fa-car"></i> Automotive & Motorcycle Access </button>
+                <button class="category-btn" onclick="redirectToCategory('Baby & Maternity Products')"><i class="fa-solid fa-baby"></i> Baby & Maternity Products  </button>
+                <button class="category-btn" onclick="redirectToCategory('Books & Office Supplies')"><i class="fa-solid fa-book"></i> Books & Office Supplies  </button>
+                <button class="category-btn" onclick="redirectToCategory('Other')"><i class="fa-solid fa-box"></i> Other  </button>
             </div>
+            <!-- 分類腳本 -->
+            <script>
+                function redirectToCategory( selectedCategory ){
+                    var currentUrl = window.location.href; 
+                    var newUrl = new URL(currentUrl); 
+
+                    // 檢查是否已經有 selected_category 參數，若有則更新它，否則新增
+                    if (newUrl.searchParams.has('selected_category')) {
+                        newUrl.searchParams.set('selected_category', selectedCategory);
+                    } 
+                    else {
+                        newUrl.searchParams.append('selected_category', selectedCategory);
+                    }
+
+                    // 檢查是否已經有 page 參數，設定為第一頁
+                    if (newUrl.searchParams.has('page')) {
+                        newUrl.searchParams.set('page', 1);
+                    }
+                    else{
+                        newUrl.searchParams.append('page', 1);
+                    }
+
+                    window.location.href = newUrl.toString();
+                }
+            </script>
 
             <!-- 商品展示 -->
             <div class = "product_container">
                 <!-- 生成product card -->
                 <?php foreach ($products as $product): ?>
-                    <div class="product_card" >
+                    <div class="product_card"  onclick="window.location.href='./product/product_details.php?product_id=<?php echo $product['PRODUCT_ID']; ?>'" >
                         
                         <!-- product image -->
                         <div class="product_image_slider">
@@ -286,18 +280,16 @@
                             <?php endfor; ?>
                             
                             <!-- 左右切換按鈕 -->
-                            <button class="prev" onclick="chang
-                            eImage('<?php echo $product['PRODUCT_ID']; ?>', -1)">&#10094;</button>
+                            <button class="prev" onclick="changeImage('<?php echo $product['PRODUCT_ID']; ?>', -1)">&#10094;</button>
                             <button class="next" onclick="changeImage('<?php echo $product['PRODUCT_ID']; ?>', 1)">&#10095;</button>
                         </div>
 
                         <!-- product info -->
                         <div class="product_info">
                             
-                            <a href="./product/product_details.php?product_id=<?php echo $product['PRODUCT_ID']; ?>" class="product_name"><?php echo htmlspecialchars($product['PRODUCT_NAME']); ?></a>
+                            <p class="product_name"><?php echo htmlspecialchars($product['PRODUCT_NAME']); ?></a>
 
-                            <!-- 主頁不展示商品分類 -->
-                            <!-- <p class="product_category">Product category: <?php //echo htmlspecialchars($product['CATEGORY']); ?></p> -->
+                            <p class="product_category">Category: <?php echo htmlspecialchars($product['CATEGORY']); ?></p>
                             <p class="product_price">Price: $<?php echo number_format($product['PRICE']); ?></p>
                             <p class="product_in_stock"><?php echo $product['IN_STOCK']; ?> in stock</p>
 
@@ -311,7 +303,7 @@
             </div>
 
             <!-- 上一頁 / 下一頁按鈕 -->
-            <div class="pagination">
+            <div id="pagination" class="pagination">
                 <button id="prevBtn" onclick="prevPage()">&#10094; Prev</button>
                 <button id="nextBtn" onclick="nextPage()">Next &#10095;</button>
             </div>
@@ -325,6 +317,8 @@
                     // const images = document.querySelectorAll("#product_image_" + productId);
                     let currentIndex = 0;
 
+                    // 阻止事件冒泡，避免觸發product card 的 onclick
+                    event.stopPropagation()
                     
                     // 找出當前顯示的圖片索引
                     for (let i = 0; i < images.length; i++) {
@@ -353,11 +347,29 @@
             <script>
                 const urlParams = new URLSearchParams(window.location.search);
                 const page =  parseInt(urlParams.get('page')) || 1;  // 默認為第 1 頁
-                const originalUrl = "http://shop_system.com/main"
+                const max_pages = <?php echo (int)$max_pages;?>;  
 
                 //初始為第一頁
                 if (page === null){
                     page=1;
+                }
+
+                // 如果查無商品 $max_pages=0 隱藏所有pagenation button
+                // 新增查無商品提示 (p tag)
+                if(max_pages === 0){
+                    document.getElementById('prevBtn').style.display = "none";
+                    document.getElementById('nextBtn').style.display = "none";
+                    
+                    var noProductMsg = document.createElement("p");         // 建立 <p> 標籤
+                    noProductMsg.innerText = "No products found.";          // 設定文字內容
+                    noProductMsg.style.color = "red";                       // 設定文字顏色
+                    noProductMsg.style.textAlign = "center";                // 讓文字置中
+                    noProductMsg.style.fontFamily = "Verdana, sans-serif"   // 設定字形
+                    noProductMsg.style.fontSize = "18px";                   // 調整字體大小
+
+                    // 將 <p> 加入到特定區塊內（例如 <div id="productList">）
+                    document.getElementById("pagination").appendChild(noProductMsg);
+
                 }
 
                 // 如果是第一頁 隱藏prev button
@@ -366,7 +378,7 @@
                 }
 
                 // 如果是最後一頁 隱藏next button
-                if(page === <?php echo (int)$max_pages; ?>){
+                if(page === max_pages){
                     document.getElementById('nextBtn').style.display = "none";
                 }
 

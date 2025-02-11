@@ -202,9 +202,26 @@
         </script>";
     }
     else{
+        
+        // 更新失敗
+        // 獲取 MySQL 錯誤碼
+        $error_code = $update_product_stmt->errno;
+        $error_msg = addslashes($update_product_stmt->error);
+
+        // 1062為UNIQUE error 代號
+        if ($error_code == 1062) {
+            // 檢查錯誤訊息是否包含 USER_NAME 或 EMAIL
+            if (strpos($error_msg, 'PRODUCT_NAME') !== false) {
+                $error_message = "Product name already exists!";
+            }
+        }
+        else {
+            $error_message = "Update product failed!\\nERROR: $error_msg";
+        }
+
         $conn->close();
         echo "<script>
-            alert('Error update product! Please try again later.');
+            alert('$error_message, Please try again later.');
             window.location.href = 'http://shop_system.com/user/user_info.php#my_product';
         </script>";
     };

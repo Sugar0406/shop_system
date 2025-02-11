@@ -43,7 +43,7 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 
     <!-- 左側菜單欄 -->
     <div class="sidebar">
-        <div calss="back_to_home_page_wrapper">
+        <div class="back_to_home_page_wrapper">
             <button onclick="redirectToMainPage()" class="back_to_main_button">&#8636; Back</button>
         </div>
         <script>
@@ -64,7 +64,7 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
             <li><a href="#my_product" data-section="my_product_wrapper">My Product</a></li>
 
             <!-- logout 直接跳轉 不需要section -->
-            <li><a href="./logout.php" >Log Out</a></li>
+            <li><a onclick="redirectToLogout()" >Log Out</a></li>
             <!-- 刪除帳號 -->
             <li><a href="#delete_account" data-section="delete_account_wrapper">Delete Account</a></li>
         </ul>
@@ -485,6 +485,16 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
         </div>
 
 
+
+
+        <!-- Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out Log_out -->
+        <script>
+            function redirectToLogout() {
+                if (confirm("Are you sure to log out?")) {
+                    location.href = "./logout.php";
+                }
+            }
+        </script>
 
 
 

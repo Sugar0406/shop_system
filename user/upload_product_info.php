@@ -124,6 +124,33 @@
     //連接資料庫
     include "../database_connect.php";
 
+    // 新增檔案失敗時 刪除資料夾
+    function deleteFolder($folderPath) {
+        // 確保資料夾存在
+        if (!is_dir($folderPath)) {
+            echo "The specified directory does not exist.";
+            return false;
+        }
+    
+        // 取得資料夾內的所有檔案與子目錄
+        $files = array_diff(scandir($folderPath), array('.', '..'));
+    
+        // 遍歷資料夾內的所有檔案
+        foreach ($files as $file) {
+            $filePath = $folderPath . DIRECTORY_SEPARATOR . $file;
+    
+            // 若是目錄，則遞迴刪除
+            if (is_dir($filePath)) {
+                deleteFolder($filePath);
+            } else {
+                unlink($filePath); // 刪除檔案
+            }
+        }
+    
+        // 刪除資料夾本身
+        return rmdir($folderPath);
+    }
+
 
     // 資料表中 SOLD預設為0,  CREATE_AT預設為CURRENT_TIMESTAMP, UPDATE_AT預設為CURRENT_TIMESTAMP
     $upload_product_sql = "
@@ -143,6 +170,7 @@
     $upload_product_stmt -> bind_param("ssssssii", $product_id, $product_name, $category, $user_id, $description, $product_photos_json, $in_stock, $price);
     
     if($upload_product_stmt -> execute()){
+        // 新增成功
         $conn->close();
         echo "<script>
             alert('Product created successfully!');
@@ -150,12 +178,32 @@
         </script>";
     }
     else{
+        // 新增失敗
+        // 獲取 MySQL 錯誤碼
+        $error_code = $upload_product_stmt->errno;
+        $error_msg = addslashes($upload_product_stmt->error);
+
+        // 1062為UNIQUE error 代號
+        if ($error_code == 1062) {
+            // 檢查錯誤訊息是否包含 USER_NAME 或 EMAIL
+            if (strpos($error_msg, 'PRODUCT_NAME') !== false) {
+                $error_message = "Product name already exists!";
+            }
+        }
+        else {
+            $error_message = "Add product failed!\\nERROR: $error_msg";
+        }
         $conn->close();
+
+        // 上傳失敗 刪除圖片資料夾
+        deleteFolder($photo_targetDir);
+
         echo "<script>
-            alert('Error creating product! Please try again later.');
+            alert('$error_message, Please try again later.');
             window.location.href = 'http://shop_system.com/user/add_product.php#my_product';
         </script>";
-    };
+        
+    }
 
 
 
