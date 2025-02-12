@@ -39,5 +39,4 @@ fileType : image/gif
 
 
 next job
-product detail description尚未加入
 訂單系統資料表
