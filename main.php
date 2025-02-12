@@ -9,159 +9,7 @@
 
 <?php
 
-    include "./database_connect.php";
-
-    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    $limit = 8; // 每頁顯示8個商品 (4*2 grid)
-    $offset = ($page - 1) * $limit; // 偏移量
-
-    // 分類預設為所有分類
-    $product_category = isset($_GET['selected_category']) ? $_GET['selected_category'] : "All category";
-    
-    // 計算沒種情況的商品數
-    $product_count = 0;
-
-
-    // 未登入時查詢所有商品
-    if ($user_id == null){
-
-        // 無指定分類
-        if ($product_category == "All category") {
-
-            // 計算商品數
-            $product_count_sql = "
-                SELECT COUNT(*) 
-                FROM products p
-                LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                WHERE IN_STOCK > 0;
-            ";
-            $product_count_stmt = $conn->prepare($product_count_sql);
-            $product_count_stmt->execute();
-            $product_count_result = $product_count_stmt->get_result();
-            $product_count = $product_count_result->fetch_row()[0]; // 取得總商品數
-
-
-            // 查詢商品資訊
-            $get_product_sql = "
-                SELECT p.*, u.USER_NAME 
-                FROM products p 
-                LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                WHERE p.IN_STOCK > 0
-                ORDER BY p.UPDATE_AT DESC
-                LIMIT ? OFFSET ?
-            ";
-            $get_product_stmt = $conn->prepare($get_product_sql);
-            $get_product_stmt->bind_param("ii", $limit, $offset); 
-        } 
-        // 有指定分類
-        else {
-            // 計算商品數
-            $product_count_sql = "
-                SELECT COUNT(*) 
-                FROM products p
-                LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                WHERE IN_STOCK > 0 AND p.CATEGORY = ?;
-            ";
-            $product_count_stmt = $conn->prepare($product_count_sql);
-            $product_count_stmt->bind_param("s", $product_category); 
-            $product_count_stmt->execute();
-            $product_count_result = $product_count_stmt->get_result();
-            $product_count = $product_count_result->fetch_row()[0]; // 取得總商品數
-            
-            // 查詢商品
-            $get_product_sql = "
-                SELECT p.*, u.USER_NAME 
-                FROM products p 
-                LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                WHERE p.IN_STOCK > 0  AND p.CATEGORY = ?
-                ORDER BY p.UPDATE_AT DESC
-                LIMIT ? OFFSET ?
-            ";
-            $get_product_stmt = $conn->prepare($get_product_sql);
-            $get_product_stmt->bind_param("sii", $product_category, $limit, $offset); 
-        }
-
-    }
-    // 已登入時排除自己的商品
-    else{
-
-        // 無指定分類，並排除當前使用者的上架商品
-        if ($product_category == "All category") {
-
-            // 計算商品數
-            $product_count_sql = "
-                SELECT COUNT(*) 
-                FROM products p
-                LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                WHERE IN_STOCK > 0 AND p.SELLER_ID != ?;
-            ";
-            $product_count_stmt = $conn->prepare($product_count_sql);
-            $product_count_stmt->bind_param("s", $user_id); 
-            $product_count_stmt->execute();
-            $product_count_result = $product_count_stmt->get_result();
-            $product_count = $product_count_result->fetch_row()[0]; // 取得總商品數
-
-
-            // 查詢商品
-            $get_product_sql = "
-                SELECT p.*, u.USER_NAME 
-                FROM products p 
-                LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                WHERE p.IN_STOCK > 0 AND p.SELLER_ID != ?
-                ORDER BY p.UPDATE_AT DESC
-                LIMIT ? OFFSET ?
-            ";
-            $get_product_stmt = $conn->prepare($get_product_sql);
-            $get_product_stmt->bind_param("sii", $user_id, $limit, $offset); 
-        } 
-        // 有指定分類，並排除當前使用者的上架商品
-        else {
-
-            // 計算商品數
-            $product_count_sql = "
-                SELECT COUNT(*) 
-                FROM products p
-                LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                WHERE IN_STOCK > 0 AND p.CATEGORY = ? AND p.SELLER_ID != ?;
-            ";
-            $product_count_stmt = $conn->prepare($product_count_sql);
-            $product_count_stmt->bind_param("ss", $product_category, $user_id); 
-            $product_count_stmt->execute();
-            $product_count_result = $product_count_stmt->get_result();
-            $product_count = $product_count_result->fetch_row()[0]; // 取得總商品數
-
-            // 查詢商品
-            $get_product_sql = "
-                SELECT p.*, u.USER_NAME 
-                FROM products p 
-                LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                WHERE p.IN_STOCK > 0  AND p.CATEGORY = ? AND p.SELLER_ID != ?
-                ORDER BY p.UPDATE_AT DESC
-                LIMIT ? OFFSET ?
-            ";
-            $get_product_stmt = $conn->prepare($get_product_sql);
-            $get_product_stmt->bind_param("ssii", $product_category, $user_id, $limit, $offset); 
-        }
-    }
-
-    //計算最大頁數
-    //例如: 17個商品，頁數設定為1,2,3
-    $max_pages = ceil($product_count / $limit);
-
-    $get_product_stmt->execute();
-    $get_product_result = $get_product_stmt->get_result();
-    $products = [];
-    //回傳結果不為空
-    if($get_product_result){
-        while ($row = $get_product_result->fetch_assoc()) {
-            $products[] = $row;
-        }
-    }
-
-
-
-    $get_product_stmt->close();
-    $conn->close();
+    include "./show_product.php";
 
 ?>
 
@@ -188,9 +36,65 @@
             <div class="main_banner_title" onclick="window.location.href='./main.php'">E-shop system</div>
 
             <div class="inputbar_button_wrapper">
-                <input class="eshop_search_bar"/>
-                <button class="eshop_search_button" >Search</button>
+                <input id="eshop_search_bar" class="eshop_search_bar"/>
+                <button class="eshop_search_button" onclick="redirectToSearch()" >Search</button>
             </div>
+
+            <script>
+                
+                //使用者按下enter後進行搜索
+                document.getElementById("eshop_search_bar").addEventListener("keypress", function(event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault(); // 防止預設的提交行為
+                        redirectToSearch();
+                    }
+                });
+
+
+                function redirectToSearch() {
+                    var currentUrl = window.location.href; 
+                    var newUrl = new URL(currentUrl); 
+                    var keyword = document.getElementById("eshop_search_bar").value.trim();
+
+                    if( keyword != "" ){
+
+                        // 檢查是否已經有 keyword 參數
+                        if (newUrl.searchParams.has('keyword')) {
+                            newUrl.searchParams.set('keyword', keyword);
+                        } 
+                        else {
+                            newUrl.searchParams.append('keyword', keyword);
+                        }
+
+                        // 檢查是否已經有 page 參數，設定為第一頁
+                        if (newUrl.searchParams.has('page')) {
+                            newUrl.searchParams.set('page', 1);
+                        }
+                        else{
+                            newUrl.searchParams.append('page', 1);
+                        }
+
+
+                        // 檢查是否已經有 category 參數，搜尋結果優先顯示所有分類
+                        if (newUrl.searchParams.has('selected_category')) {
+                            newUrl.searchParams.set('selected_category', "All category");
+                        }
+                        else{
+                            newUrl.searchParams.append('selected_category', "All category");
+                        }
+
+
+
+                        window.location.href = newUrl.toString();
+
+                    }
+                    // 沒有輸入時，跳出提醒
+                    else{
+                        alert("Please enter search keyword.");
+                    }
+
+                }
+            </script>
 
 
             <div class="login_register_wrapper">
@@ -257,6 +161,9 @@
                     window.location.href = newUrl.toString();
                 }
             </script>
+
+
+
 
             <!-- 商品展示 -->
             <div class = "product_container">

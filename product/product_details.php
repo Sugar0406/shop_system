@@ -155,6 +155,14 @@
                     <div class="product_name"><?php echo $product_detail_result["PRODUCT_NAME"];?></div>
                     <div class="seller_name">Seller : <?php echo $product_detail_result["SELLER_NAME"]?></div>
                     <div class="price">$<?php echo $product_detail_result["PRICE"];?></div>
+
+
+                    <div class="description_container">
+                        <div class="description_label">Product Description</div>
+                        <textarea class="description"><?php echo $product_detail_result["DESCRIPTION"]?></textarea>
+                    </div>
+
+
                     <div class="input_quantity_container">
                         <button id="decrease_button" class="decrease_button" onclick="decrease()">-</button>
 
@@ -164,6 +172,8 @@
                         <button id="increase_button" class="increase_button" onclick="increase()">+</button>
 
                         <span class="in_stock"><?php echo $product_detail_result["IN_STOCK"] ?> in stock</span>
+
+
 
                         <script>
 
@@ -194,9 +204,14 @@
                                         this.value = maxvalue;
                                     }
 
+                                    // 最大購買提醒控制
                                     if (nowvalue >= maxvalue){
                                         hint = document.getElementById("hint_max_input")
                                         hint.style.display = "block"
+                                    }
+                                    else{
+                                        hint = document.getElementById("hint_max_input")
+                                        hint.style.display = "none";
                                     }
 
                                 });
@@ -252,6 +267,7 @@
                                 // 當 $user_id 為 null 時，等同於 buyer_id = "";
                                 let buyer_id = "<?php echo $user_id ;?>";
                                 let productId = "<?php echo $product_detail_result['PRODUCT_ID'];?>";
+                                let sellerId = "<?php echo $product_detail_result['SELLER_ID'];?>";
                                 let quantity = document.getElementById("number_input_field").value;
                                 // alert(productId + " / " + quantity);
 
@@ -263,10 +279,10 @@
                                 }
                                 else{
                                     alert( 
-                                        "buyerID : " + buyer_id + "</br>"
-                                        + "productId : " + productId + "</br>"
-                                        + "quantity : " + quantity + "</br>"
-                                        + "SellerId : "
+                                        "buyerID : " + buyer_id + "\n"
+                                        + "productId : " + productId + "\n"
+                                        + "quantity : " + quantity + "\n"
+                                        + "SellerId : " + sellerId + "\n"
                                     );
                                     return;
                                 }

@@ -329,6 +329,10 @@ button.prev:hover, button.next:hover {
     border-radius: 3px;
 }
 
+.in_stock{
+    font-family: Verdana, sans-serif;
+}
+
 .hint_max_input{
 
     /* 預設不顯示 由price腳本控制是否顯示 */
@@ -352,5 +356,28 @@ button.prev:hover, button.next:hover {
     font-size: 16px;
     padding: 10px;
 }
+
+
+.description_container{
+    margin: 15px;
+}
+
+.description_label{
+    font-family: Verdana, sans-serif;
+    margin-bottom: 10px;
+}
+
+.description {
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+    pointer-events: none; /* 禁止用戶點擊和輸入 */
+    resize: none; /* 禁止調整大小 */
+    width: 350px; /* 設定固定寬度 */
+    height: 150px; /* 設定固定高度 */
+    background-color: rgb(245, 245, 245);/* 可選：改變背景色讓用戶知道不可編輯 */
+    border: 1px solid #ccc; /* 可選：增加邊框 */
+    border-radius: 0.5rem;
+}
+
 
 /* product_details roduct_details roduct_details roduct_details roduct_details roduct_details roduct_details roduct_details */
