@@ -47,6 +47,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="./product_css/product_details.css" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
         <title><?php echo $product_detail_result["PRODUCT_NAME"] ?></title>
     </head>
 
@@ -67,7 +68,7 @@
                 <!-- 如果用戶已登入，顯示使用者名稱和頭像 -->
                 <?php if ($user_name && $user_picture): ?>
                     <div class="user_info">
-                        <a href="./shopping_cart.php" class="cart_button">
+                        <a href="../shopping_cart.php" class="cart_button">
                             <i class="fa fa-shopping-cart"></i>
                         </a>
                         <a href="http://shop_system.com/user/user_info.php#my_account" class="user_name"><?php echo $user_name; ?></a>
@@ -260,34 +261,54 @@
 
 
                     <div class="add_to_cart_button_container">
+                    <!-- form 搭配 hidden input 傳遞 JSON 字串 -->
+                    <form id="cartForm" action="../add_to_shopping_cart.php" method="POST">
+                        <input type="hidden" name="product" id="product">
                         <button class="add_to_cart_button" onclick="addToCart()">Add to Cart</button>
                         <script>
                             function addToCart() {
 
-                                // 當 $user_id 為 null 時，等同於 buyer_id = "";
-                                let buyer_id = "<?php echo $user_id ;?>";
+                                
+                                let buyer_id = "<?php echo $user_id ;?>"; // 當 $user_id 為 null 時，等同於 buyer_id = "";
                                 let productId = "<?php echo $product_detail_result['PRODUCT_ID'];?>";
+                                let price = "<?php echo $product_detail_result['PRICE'];?>"; 
                                 let sellerId = "<?php echo $product_detail_result['SELLER_ID'];?>";
                                 let quantity = document.getElementById("number_input_field").value;
-                                // alert(productId + " / " + quantity);
 
                                 // 未登入時，引導到loginpage
                                 if ( buyer_id === "") {
+                                    event.preventDefault(); // 避免表單提交
                                     alert("Please login first.");
                                     window.location.href="../customer/login.html";
-                                    return;
+                                    return; 
                                 }
+
+                                // 登入時 加入購物車
                                 else{
-                                    alert( 
-                                        "buyerID : " + buyer_id + "\n"
-                                        + "productId : " + productId + "\n"
-                                        + "quantity : " + quantity + "\n"
-                                        + "SellerId : " + sellerId + "\n"
-                                    );
-                                    return;
+                                    // alert( 
+                                    //     "buyerID : " + buyer_id + "\n"
+                                    //     + "productId : " + productId + "\n"
+                                    //     + "quantity : " + quantity + "\n"
+                                    //     + "SellerId : " + sellerId + "\n"
+                                    // )
+
+                                    product = {};
+                                    product.productId = productId;
+                                    product.price = price;
+                                    product.quantity = quantity;
+                                    product.sellerId = sellerId;
+                                    product.buyerId = buyer_id;
+
+                                    document.getElementById('product').value = JSON.stringify(product);
+
+                                    // 提交表單
+                                    document.getElementById('cartForm').submit();
+
+
                                 }
                             }
                         </script>
+                    </form>
                     </div>
                 </div>
 

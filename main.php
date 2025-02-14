@@ -19,7 +19,7 @@
 <html>
     <head>
         <title>E-SHOP SYSTEM</title>
-        <link rel="stylesheet" type="text/css" href="./main_style.css">
+        <link rel="stylesheet" type="text/css" href="./main_css/main.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 

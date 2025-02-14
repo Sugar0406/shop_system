@@ -30,7 +30,7 @@
                     SELECT COUNT(*) 
                     FROM products p
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE IN_STOCK > 0;
+                    WHERE IN_STOCK > 0 AND u.STATUS = 'ACTIVE';
                 ";
                 $product_count_stmt = $conn->prepare($product_count_sql);
                 $product_count_stmt->execute();
@@ -43,7 +43,7 @@
                     SELECT p.*, u.USER_NAME 
                     FROM products p 
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE p.IN_STOCK > 0
+                    WHERE p.IN_STOCK > 0 AND u.STATUS = 'ACTIVE'
                     ORDER BY p.UPDATE_AT DESC
                     LIMIT ? OFFSET ?
                 ";
@@ -57,7 +57,7 @@
                     SELECT COUNT(*) 
                     FROM products p
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE IN_STOCK > 0 AND p.CATEGORY = ?;
+                    WHERE IN_STOCK > 0 AND p.CATEGORY = ? AND u.STATUS = 'ACTIVE';
                 ";
                 $product_count_stmt = $conn->prepare($product_count_sql);
                 $product_count_stmt->bind_param("s", $product_category); 
@@ -70,7 +70,7 @@
                     SELECT p.*, u.USER_NAME 
                     FROM products p 
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE p.IN_STOCK > 0  AND p.CATEGORY = ?
+                    WHERE p.IN_STOCK > 0  AND p.CATEGORY = ? AND u.STATUS = 'ACTIVE'
                     ORDER BY p.UPDATE_AT DESC
                     LIMIT ? OFFSET ?
                 ";
@@ -90,7 +90,7 @@
                     SELECT COUNT(*) 
                     FROM products p
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE IN_STOCK > 0 AND p.SELLER_ID != ?;
+                    WHERE IN_STOCK > 0 AND p.SELLER_ID != ? AND u.STATUS = 'ACTIVE';
                 ";
                 $product_count_stmt = $conn->prepare($product_count_sql);
                 $product_count_stmt->bind_param("s", $user_id); 
@@ -104,7 +104,7 @@
                     SELECT p.*, u.USER_NAME 
                     FROM products p 
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE p.IN_STOCK > 0 AND p.SELLER_ID != ?
+                    WHERE p.IN_STOCK > 0 AND p.SELLER_ID != ? AND u.STATUS = 'ACTIVE'
                     ORDER BY p.UPDATE_AT DESC
                     LIMIT ? OFFSET ?
                 ";
@@ -119,7 +119,7 @@
                     SELECT COUNT(*) 
                     FROM products p
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE IN_STOCK > 0 AND p.CATEGORY = ? AND p.SELLER_ID != ?;
+                    WHERE IN_STOCK > 0 AND p.CATEGORY = ? AND p.SELLER_ID != ? AND u.STATUS = 'ACTIVE';
                 ";
                 $product_count_stmt = $conn->prepare($product_count_sql);
                 $product_count_stmt->bind_param("ss", $product_category, $user_id); 
@@ -132,7 +132,7 @@
                     SELECT p.*, u.USER_NAME 
                     FROM products p 
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE p.IN_STOCK > 0  AND p.CATEGORY = ? AND p.SELLER_ID != ?
+                    WHERE p.IN_STOCK > 0  AND p.CATEGORY = ? AND p.SELLER_ID != ? AND u.STATUS = 'ACTIVE'
                     ORDER BY p.UPDATE_AT DESC
                     LIMIT ? OFFSET ?
                 ";
@@ -155,7 +155,7 @@
                     SELECT COUNT(*) 
                     FROM products p
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE IN_STOCK > 0 AND p.PRODUCT_NAME LIKE ? ; 
+                    WHERE IN_STOCK > 0 AND p.PRODUCT_NAME LIKE ?  AND u.STATUS = 'ACTIVE'; 
                 ";
                 $product_count_stmt = $conn->prepare($product_count_sql);
                 $product_count_stmt -> bind_param("s", $product_keyword);
@@ -169,7 +169,7 @@
                     SELECT p.*, u.USER_NAME 
                     FROM products p 
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE p.IN_STOCK > 0 AND p.PRODUCT_NAME LIKE ?
+                    WHERE p.IN_STOCK > 0 AND p.PRODUCT_NAME LIKE ? AND u.STATUS = 'ACTIVE'
                     ORDER BY p.UPDATE_AT DESC
                     LIMIT ? OFFSET ?
                 ";
@@ -183,7 +183,7 @@
                     SELECT COUNT(*) 
                     FROM products p
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE IN_STOCK > 0 AND p.CATEGORY = ? AND p.PRODUCT_NAME LIKE ?;
+                    WHERE IN_STOCK > 0 AND p.CATEGORY = ? AND p.PRODUCT_NAME LIKE ? AND u.STATUS = 'ACTIVE';
                 ";
                 $product_count_stmt = $conn->prepare($product_count_sql);
                 $product_count_stmt->bind_param("ss", $product_category, $product_keyword); 
@@ -196,7 +196,7 @@
                     SELECT p.*, u.USER_NAME 
                     FROM products p 
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE p.IN_STOCK > 0  AND p.CATEGORY = ? AND p.PRODUCT_NAME LIKE ?
+                    WHERE p.IN_STOCK > 0  AND p.CATEGORY = ? AND p.PRODUCT_NAME LIKE ? AND u.STATUS = 'ACTIVE'
                     ORDER BY p.UPDATE_AT DESC
                     LIMIT ? OFFSET ?
                 ";
@@ -216,7 +216,7 @@
                     SELECT COUNT(*) 
                     FROM products p
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE IN_STOCK > 0 AND p.SELLER_ID != ? AND p.PRODUCT_NAME LIKE ?;
+                    WHERE IN_STOCK > 0 AND p.SELLER_ID != ? AND p.PRODUCT_NAME LIKE ? AND u.STATUS = 'ACTIVE';
                 ";
                 $product_count_stmt = $conn->prepare($product_count_sql);
                 $product_count_stmt->bind_param("ss", $user_id, $product_keyword); 
@@ -230,7 +230,7 @@
                     SELECT p.*, u.USER_NAME 
                     FROM products p 
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE p.IN_STOCK > 0 AND p.SELLER_ID != ? AND p.PRODUCT_NAME LIKE ?
+                    WHERE p.IN_STOCK > 0 AND p.SELLER_ID != ? AND p.PRODUCT_NAME LIKE ? AND u.STATUS = 'ACTIVE'
                     ORDER BY p.UPDATE_AT DESC
                     LIMIT ? OFFSET ?
                 ";
@@ -245,7 +245,7 @@
                     SELECT COUNT(*) 
                     FROM products p
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE IN_STOCK > 0 AND p.CATEGORY = ? AND p.SELLER_ID != ? AND p.PRODUCT_NAME LIKE ?;
+                    WHERE IN_STOCK > 0 AND p.CATEGORY = ? AND p.SELLER_ID != ? AND p.PRODUCT_NAME LIKE ? AND u.STATUS = 'ACTIVE';
                 ";
                 $product_count_stmt = $conn->prepare($product_count_sql);
                 $product_count_stmt->bind_param("sss", $product_category, $user_id, $product_keyword); 
@@ -258,7 +258,7 @@
                     SELECT p.*, u.USER_NAME 
                     FROM products p 
                     LEFT JOIN users u ON p.SELLER_ID = u.USER_ID
-                    WHERE p.IN_STOCK > 0  AND p.CATEGORY = ? AND p.SELLER_ID != ? AND p.PRODUCT_NAME LIKE ?
+                    WHERE p.IN_STOCK > 0  AND p.CATEGORY = ? AND p.SELLER_ID != ? AND p.PRODUCT_NAME LIKE ? AND u.STATUS = 'ACTIVE'
                     ORDER BY p.UPDATE_AT DESC
                     LIMIT ? OFFSET ?
                 ";
