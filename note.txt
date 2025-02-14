@@ -3,6 +3,7 @@ mysql phpmyadmin : http://localhost/phpmyadmin
 
 ACC1 max@gmail.com ; 123
 ACC2 max2@gmail.com ; 456
+ACC3 max3@gmail.com ; 789
 
 css統一字體 
 font-family: Verdana, sans-serif;
@@ -38,5 +39,32 @@ fileType : image/gif
 <option value="Other">Other</option>
 
 
+
+// 初始化 productList 陣列
+let productList = [];
+
+// 添加商品資訊到 productList 陣列
+let product = {
+    productId: productId,
+    quantity: quantity,
+};
+
+// 將商品加入 productList 陣列
+productList.push(product);
+
+
 next job
-訂單系統資料表
+完成購物車的css
+完成user_info的my_purchase
+完成整個訂單系統
+
+刪除帳號時 將
+STATUS設定為DELETE
+USER_NAME : NULL
+EMAIL : NULL
+避免註冊帳號時INSERT受到UNIQUE約束
+登入帳號時也會因為搜尋不到EMAIL帳號而顯示該帳號為註冊
+
+其餘需要USER_NAME的地方需要另外判定USER_NAME如果為NULL則顯示帳號已刪除
+在商品展示處不會顯示DELETE帳號的商品 所以加入購物車按鈕不用特別更改
+購物車中 如果使用者先加入商品後續賣家刪除帳號要另外做處理
