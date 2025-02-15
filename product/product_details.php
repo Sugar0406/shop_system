@@ -56,12 +56,68 @@
 
         <!-- main banner -->
         <div class="main_banner">
-            <div class="main_banner_title" onclick="window.location.href='../main.php'">E-shop system</div>
+            <div class="main_banner_title" onclick="window.location.href='./main.php'">E-shop system</div>
 
             <div class="inputbar_button_wrapper">
-                <input class="eshop_search_bar"/>
-                <button class="eshop_search_button" >Search</button>
+                <input id="eshop_search_bar" class="eshop_search_bar"/>
+                <button class="eshop_search_button" onclick="redirectToSearch()" >Search</button>
             </div>
+
+            <script>
+                
+                //使用者按下enter後進行搜索
+                document.getElementById("eshop_search_bar").addEventListener("keypress", function(event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault(); // 防止預設的提交行為
+                        redirectToSearch();
+                    }
+                });
+
+
+                function redirectToSearch() {
+                    var currentUrl = window.location.href; 
+                    var newUrl = new URL("http://shop_system.com/main.php");
+                    var keyword = document.getElementById("eshop_search_bar").value.trim();
+
+                    if( keyword != "" ){
+
+                        // 檢查是否已經有 keyword 參數
+                        if (newUrl.searchParams.has('keyword')) {
+                            newUrl.searchParams.set('keyword', keyword);
+                        } 
+                        else {
+                            newUrl.searchParams.append('keyword', keyword);
+                        }
+
+                        // 檢查是否已經有 page 參數，設定為第一頁
+                        if (newUrl.searchParams.has('page')) {
+                            newUrl.searchParams.set('page', 1);
+                        }
+                        else{
+                            newUrl.searchParams.append('page', 1);
+                        }
+
+
+                        // 檢查是否已經有 category 參數，搜尋結果優先顯示所有分類
+                        if (newUrl.searchParams.has('selected_category')) {
+                            newUrl.searchParams.set('selected_category', "All category");
+                        }
+                        else{
+                            newUrl.searchParams.append('selected_category', "All category");
+                        }
+
+
+
+                        window.location.href = newUrl.toString();
+
+                    }
+                    // 沒有輸入時，跳出提醒
+                    else{
+                        alert("Please enter search keyword.");
+                    }
+
+                }
+            </script>
 
 
             <div class="login_register_wrapper">
@@ -76,9 +132,9 @@
                     </div>
 
                 <?php else: ?>
-                    <a class="login_word" href="../customer/login.html">Login</a>
+                    <a class="login_word" href="./customer/login.html">Login</a>
                     <div class="login_register_divider">/</div>
-                    <a class="register_word" href="../customer/register.php">Register</a>
+                    <a class="register_word" href="./customer/register.php">Register</a>
                 <?php endif; ?>
             </div>
             

@@ -142,7 +142,79 @@ html, body {
 /* main_banner main_banner main_banner main_banner main_banner main_banner main_banner main_banner main_banner */
 
 
-/**/
+/* order_card order_card order_card order_card order_card order_card order_card order_card order_card order_card */
 .shopping_cart_container{
     margin-top: 100px;
 }
+
+
+.order_card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 16px auto;
+    max-width: 400px;
+    border-left: 5px solid #4CAF50;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.order_card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.product_container{
+    display: flex;
+    align-items: center;
+}
+
+.product_image img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+
+.seller_name {
+    margin: 8px 0;
+    color: #4CAF50;
+    font-weight: bold;
+    font-family: Verdana, sans-serif;
+}
+
+.product_container {
+    padding: 8px;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.product_name, .product_quantity {
+    margin: 4px 0;
+    color: #333;
+    padding-left: 10px;
+    border-left: 3px solid #ddd;
+    font-family: Verdana, sans-serif;
+}
+
+.checkout_button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 12px;
+    transition: background-color 0.3s ease;
+    font-family: Verdana, sans-serif;
+}
+
+.checkout_button:hover {
+    background-color: #38823c;
+}
+
+/* order_card order_card order_card order_card order_card order_card order_card order_card order_card order_card */
