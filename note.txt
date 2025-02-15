@@ -54,7 +54,6 @@ productList.push(product);
 
 
 next job
-完成購物車的css
 完成user_info的my_purchase
 完成整個訂單系統
 
