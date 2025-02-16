@@ -265,6 +265,8 @@ function getFirstImagePath($product_id) {
                 <input type="hidden" name="total_price" value="<?php echo (int)$total_price; ?>" >
                 <!-- hidden order_id -->
                 <input type="hidden" name="order_id" value="<?php echo $order_id;?>" >
+                <!-- hidden order product -->
+                <input type="hidden" name="order_product" value="<?php echo htmlspecialchars(json_encode($order_product_list, true));?>" >
                 <button class="place_order_button" id="place_order_button" type="submit">Place Order</button>
             </form>
             

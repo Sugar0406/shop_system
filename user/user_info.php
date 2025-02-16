@@ -30,6 +30,107 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 
 
 
+<!-- 查詢我的訂單 -->
+<?php
+
+        include "../database_connect.php";
+
+        // 作為賣家或買家的訂單都要列出
+        $completed_status = "COMPLETED";
+
+        // 查詢自己作為賣家的訂單 (SELLER_ID為自己的ID 且狀態不為COMPLETED)
+        $sell_order_sql = "SELECT * FROM orders WHERE SELLER_ID=? AND STATUS!=?";
+        $sell_order_stmt = $conn->prepare($sell_order_sql);
+        $sell_order_stmt->bind_param("ss", $_SESSION['USER_ID'], $completed_status);
+        $sell_order_stmt->execute();
+        $sell_order_result = $sell_order_stmt->get_result();
+        $sell_order_stmt->close();
+
+        // 查詢自己作為買家的訂單
+        $buy_order_sql = "SELECT * FROM orders WHERE BUYER_ID=? AND STATUS!=?";
+        $buy_order_stmt = $conn->prepare($buy_order_sql);
+        $buy_order_stmt->bind_param("ss", $_SESSION['USER_ID'], $completed_status);
+        $buy_order_stmt->execute();
+        $buy_order_result = $buy_order_stmt->get_result();
+        $buy_order_stmt->close();
+
+        // 查詢歷史訂單
+        $history_order_sql = "SELECT * FROM orders WHERE (SELLER_ID=? OR BUYER_ID=?) AND STATUS =?";
+        $history_order_stmt = $conn->prepare($history_order_sql);
+        $history_order_stmt->bind_param("sss", $_SESSION['USER_ID'], $_SESSION['USER_ID'], $completed_status);
+        $history_order_stmt->execute();
+        $history_order_result = $history_order_stmt->get_result();
+        $history_order_stmt->close();
+
+?>
+
+
+
+
+
+
+<?php
+    include "../database_connect.php";
+
+    function get_user_name( $user_id ){
+        global $conn;
+
+        $get_user_name_sql = "SELECT USER_NAME FROM users WHERE user_id=?";
+        $get_user_name_stmt = $conn->prepare($get_user_name_sql);
+        $get_user_name_stmt->bind_param("s", $user_id);
+        $get_user_name_stmt->execute();
+        $get_user_name_result = $get_user_name_stmt -> get_result();
+        $row = $get_user_name_result->fetch_assoc();
+        return $row['USER_NAME'] ?? 'User Account Delete';
+    }
+
+
+
+    function get_product_name( $product_id ){
+        global $conn;
+
+        $get_product_name_sql = "SELECT PRODUCT_NAME FROM products WHERE PRODUCT_ID=?";
+        $get_product_name_stmt = $conn->prepare($get_product_name_sql);
+        $get_product_name_stmt->bind_param("s", $product_id);
+        $get_product_name_stmt->execute();
+        $get_product_name_result = $get_product_name_stmt -> get_result();
+        $row = $get_product_name_result->fetch_assoc();
+        return $row['PRODUCT_NAME'];
+    }
+
+
+    function getFirstImagePath($product_id) {
+        // 設定商品資料夾的路徑
+        $directory = '../product_img/' . $product_id . "/";
+    
+        // 讀取資料夾中的所有檔案
+        $files = scandir($directory);
+    
+        // 移除 "." 和 ".."
+        $files = array_diff($files, array('.', '..'));
+    
+        // 檢查是否有檔案
+        if (empty($files)) {
+            return null; // 沒有檔案的情況
+        }
+    
+        // 取得第一個檔案的名稱
+        $first_file = reset($files);
+    
+        // 回傳完整檔案路徑
+        return $directory . $first_file;
+    }
+
+
+?>
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -104,7 +205,7 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 
                     // 如果是 Log Out，允許直接跳轉，不攔截點擊事件
                     if (!sectionId) {
-                        alert("Logout Successfully");
+                        // alert("Logout Successfully");
                         return; 
                     }
 
@@ -333,6 +434,177 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
         <!-- My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase My Purchase  -->
         <div id="my_purchase_wrapper" class="content-section">
             <h1 class="my_purchase_title">My Purchase</h1>
+
+            <!-- purchase_card 分為2種 身為買家或身為賣家 -->
+            <!-- 且訂單分為 SUBMITTED (訂單送出)，SHIPPED(商品寄出) COMPLETED(訂單完成)-->
+            <!-- 利用radio input 切換顯示的分類(order_card都有一個自定義屬性status 分別為buyer seller history) -->
+            <div class="ratio_button_container">
+                <label class="ratio_button">
+                    <input type="radio" name="order_filter" value="buyer" checked> My Purchased Orders
+                </label>
+                <label class="ratio_button">
+                    <input type="radio" name="order_filter" value="seller"> My Sold Items
+                </label>
+                <label class="ratio_button">
+                    <input type="radio" name="order_filter" value="history"> History Order
+                </label>
+            </div>
+
+
+            <script>
+                // 當網頁載入時 讓使用者選擇 My Purchase Order 來隱藏其他的訂單(預設顯示自己購買的訂單)
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.querySelectorAll('.order_card').forEach(card => {
+                        if (card.getAttribute('status') === 'buyer') {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+
+                // 當選擇不同的 radio 按鈕時，過濾顯示對應的訂單卡片
+                document.querySelectorAll('input[name="order_filter"]').forEach(input => {
+                    input.addEventListener('change', function() {
+                        const selectedValue = this.value; // 取得選中的值
+
+                        // 獲取所有的 order_card
+                        document.querySelectorAll('.order_card').forEach(card => {
+                            // 根據 status 屬性來決定是否顯示
+                            if (card.getAttribute('status') === selectedValue) {
+                                card.style.display = 'block'; // 顯示符合條件的卡片
+                            } else {
+                                card.style.display = 'none'; // 隱藏不符合條件的卡片
+                            }
+                        });
+                    });
+                });
+            </script>
+
+
+            <div class="order_card_container">
+                
+                <!-- 自己是買家 order_card->status為buyer -->
+                <?php foreach($buy_order_result as $buy_order): ?>
+                    <div class="order_card" status="buyer">
+
+                        <p class="seller_name">Seller : <?php echo get_user_name($buy_order["SELLER_ID"]) ?></p>
+                        
+                        <!-- 生成商品 -->
+                        <?php foreach (json_decode($buy_order["ORDER_PRODUCTS"], true) as $product): ?>
+                            <div class="product_container">
+
+                                <div class="order_product_image">
+                                    <img src="<?php  echo getFirstImagePath($product["productId"]) ?>" alt="<?php echo $order_product['product_name'];?>">
+                                </div>
+
+                                <div class="order_product_info">
+                                    <p class="order_roduct_name">Product Name: <?php echo get_product_name($product["productId"]); ?></p>
+                                    <p class="order_product_quantity">quantity: <?php echo $product["quantity"]?></p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                        
+                        <!-- 按下按鈕相當於使用者收到貨品 完成訂單 -->
+                        <form action="./complete_order.php" method="POST">
+                            <input type="hidden" name="order_id" value="<?php echo $buy_order["ORDER_ID"]?>">
+                            <button type="submmit" id="order_button_<?php echo $buy_order["ORDER_ID"]; ?>" class="order_button">Complete Order</button>
+                        </form>
+                        <script>
+
+                            // 如果order還沒寄出(status不是SHIPPED) 則修改按鈕樣式提醒使用者並且改為不可點玄
+                            document.addEventListener("DOMContentLoaded", function() {
+                                const order_btn = document.getElementById("order_button_<?php echo $buy_order["ORDER_ID"]; ?>");
+                                const now_order_status = <?php echo json_encode($buy_order["STATUS"]); ?>;
+                                
+                                if(now_order_status !== "SHIPPED"){
+                                    order_btn.style.backgroundColor = "#ccc"; 
+                                    order_btn.style.cursor = "not-allowed"; 
+                                    order_btn.disabled = true;
+                                    order_btn.textContent = "Order Not Shipped"; // 顯示商品未寄出的訊息
+                                }
+                            });
+                        </script>
+
+                    </div>
+                <?php endforeach; ?>
+
+
+                <!-- 自己是賣家 order_card->status為seller -->
+                <?php foreach($sell_order_result as $sell_order): ?>
+                    <div class="order_card" status="seller">
+
+                        <p class="buyer_name">buyer : <?php echo get_user_name($sell_order["BUYER_ID"]) ?></p>
+                        
+                        <!-- 生成商品 -->
+                        <?php foreach (json_decode($sell_order["ORDER_PRODUCTS"], true) as $product): ?>
+                            <div class="product_container">
+
+                                <div class="order_product_image">
+                                    <img src="<?php  echo getFirstImagePath($product["productId"]) ?>" alt="<?php echo $order_product['product_name'];?>">
+                                </div>
+
+                                <div class="order_product_info">
+                                    <p class="order_product_name">Product Name: <?php echo get_product_name($product["productId"]); ?></p>
+                                    <p class="order_product_quantity">quantity: <?php echo $product["quantity"]; ?></p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+
+                        <form action="./shipped_order.php" method="POST">
+                            <input type="hidden" name="order_id" value="<?php echo $sell_order["ORDER_ID"]; ?>">
+                            <button id="order_button_<?php echo $sell_order["ORDER_ID"]; ?>" class="order_button">Shipped Order</button>
+                        </form>
+                        <script>
+
+                            // 寄出商品後(status是SHIPPED) 則隱藏按鈕
+                            document.addEventListener("DOMContentLoaded", function() {
+                                const order_btn = document.getElementById("order_button_<?php echo $sell_order["ORDER_ID"]; ?>");
+                                const now_order_status = <?php echo json_encode($sell_order["STATUS"]); ?>;
+                                
+                                if(now_order_status == "SHIPPED"){
+                                    order_btn.style.backgroundColor = "#ccc";
+                                    order_btn.style.cursor = "not-allowed";
+                                    order_btn.disabled = true;
+                                    order_btn.textContent = "Order Aready Shipped"; // 顯示商品已寄出的訊息
+                                }
+                            });
+                        </script>
+
+                    </div>
+                <?php endforeach; ?>
+
+
+
+
+                <!-- 歷史訂單 無論自己是買家或賣家 status=history -->
+                <?php foreach($history_order_result as $history_order): ?>
+                    <div class="order_card" status="history">
+                    
+                        <p class="seller_name">Seller : <?php echo get_user_name($history_order["SELLER_ID"]) ?></p>
+                        <p class="buyer_name">buyer : <?php echo get_user_name($history_order["BUYER_ID"]) ?></p>
+                        <p class="complete_time">Order Complete at : <?php echo $history_order["COMPLETED_AT"] ?></p>
+                        
+                        <!-- 生成商品 -->
+                        <?php foreach (json_decode($history_order["ORDER_PRODUCTS"], true) as $product): ?>
+                            <div class="product_container">
+
+                                <div class="order_product_image">
+                                    <img src="<?php  echo getFirstImagePath($product["productId"]) ?>" alt="<?php echo $order_product['product_name'];?>">
+                                </div>
+
+                                <div class="order_product_info">
+                                    <p class="order_product_name">Product Name: <?php echo get_product_name($product["productId"]); ?></p>
+                                    <p class="order_product_quantity">quantity: <?php echo $product["quantity"]?></p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+
+                    </div>
+                <?php endforeach; ?>                    
+
+            </div>
+
         </div>
 
 
@@ -381,6 +653,7 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
                             <p class="product_category">Product category: <?php echo htmlspecialchars($product['CATEGORY']); ?></p>
                             <p class="product_price">Price: $<?php echo number_format($product['PRICE']); ?></p>
                             <p class="product_in_stock"><?php echo $product['IN_STOCK']; ?> in stock</p>
+                            <p class="product_sold"><?php echo $product['SOLD']; ?> sold</p>
 
                             <div class="product_button_container">
                                 <button class="edit_product_button" onclick="redirectToEditProductInfo('<?php echo $product['PRODUCT_ID']; ?>')">Edit Product Info</button>
@@ -491,6 +764,7 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
         <script>
             function redirectToLogout() {
                 if (confirm("Are you sure to log out?")) {
+                    alert("Logout Successfully");
                     location.href = "./logout.php";
                 }
             }
@@ -501,6 +775,38 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
     <!-- Delete Account Delete Account Delete Account Delete Account Delete Account Delete Account Delete Account Delete Account Delete Account Delete Account -->
     <div id="delete_account_wrapper" class="content-section">
         <h1 class="delete_account_title">Delete Account</h1>
+
+        <div class="check_delete_account_container">
+            <p>Are you sure to delete your account? This action cannot be undone.</p>
+            <p>If you want to delete your account, please enter the following format:</p>
+            <p>UserName@delete</p>
+
+            <form method="post" action="./delete_account.php" onsubmit="return confirmDeletion()">
+            <input type="text" class="delete_accout_input" name="delete_account" placeholder="<?php echo $user_name ?>@delete" required>
+            <button type="submit" name="delete_account_button" class="delete_account_button">DeleteAccount</button>
+            </form>
+        </div>
+
+        <script>
+            // 按鈕被點擊時 跟用戶再次確認
+            function confirmDeletion() {
+                const userInput = document.querySelector('input[name="delete_account"]').value;
+                const correctInput = "<?php echo $user_name; ?>@delete"; // 用戶名+@delete的正確格式
+
+                if(confirm("Are you sure you want to delete your account? This action cannot be undone.")){
+                    if (userInput === correctInput){
+                        return true;
+                    }
+                    else{
+                        alert("The input does not match the required format.");
+                        return false;
+                    }
+                }
+                else{
+                    return false;
+                }
+            }
+        </script>
 
     </div>
 

@@ -22,7 +22,7 @@
 
 html{
     min-width: 1100px; /* 避免暴版 */
-    min-height: 800px;
+    min-height: 1100px;
 }
 
 body {
@@ -353,7 +353,91 @@ body {
 
 }
 
+/*order card*/
+.order_card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 16px auto;
+    max-width: 400px;
+    border-left: 5px solid #4CAF50;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.order_card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.product_container{
+    display: flex;
+    align-items: center;
+}
+
+.order_product_image img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+
+.seller_name, .buyer_name {
+    margin: 8px 0;
+    color: #4CAF50;
+    font-weight: bold;
+    font-family: Verdana, sans-serif;
+}
+
+.complete_time {
+    margin: 8px 0;
+    color: #d7951a;
+    font-weight: bold;
+    font-family: Verdana, sans-serif;
+}
+
+.product_container {
+    padding: 8px;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.order_product_name, .order_product_quantity {
+    margin: 4px 0;
+    color: #333;
+    padding-left: 10px;
+    border-left: 3px solid #ddd;
+    font-family: Verdana, sans-serif;
+}
+
+.order_button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 12px;
+    transition: background-color 0.3s ease;
+    font-family: Verdana, sans-serif;
+}
+
+.order_button:hover {
+    background-color: #38823c;
+}
+
 /* my_purchase my_purchase my_purchase my_purchase my_purchase my_purchase my_purchase  */
+
+
+
+
+
+
+
 
 
 
@@ -365,7 +449,51 @@ body {
 
 }
 
+.check_delete_account_container {
+
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+    margin: 5px 0px 15px 0px; 
+}
+.check_delete_account_container p{
+    font-family: Verdana, sans-serif;
+}
+
+.delete_accout_input {
+    width: 90%; /* 這樣密碼輸入框的寬度會填滿整個容器 */
+    padding: 0.5rem;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    padding-right: 40px; /* 預留空間給按鈕 */
+}
+.delete_accout_input::placeholder {
+    color: #999;
+}
+
+.delete_account_button{
+    background-color: #b22d2d;
+    color: white;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px 0px 0px 0px;
+
+}
+
+
 /* delete_account delete_account delete_account delete_account delete_account delete_account  */
+
+
+
+
+
+
 
 
 
@@ -392,7 +520,7 @@ body {
 
 .product_card{
     width: 500px;
-    height: 300px;
+    height: 320px;
     margin: 10px 0px 10px 0px;
     background-color: white;
     border-radius: 4px;
@@ -498,7 +626,11 @@ button.prev:hover, button.next:hover {
     margin-bottom: 5px;
 }
 
-
+.product_sold{
+    font-family: Verdana, sans-serif;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 
 /* 商品頁面 */
 .pagination {

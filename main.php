@@ -199,6 +199,7 @@
                             <p class="product_category">Category: <?php echo htmlspecialchars($product['CATEGORY']); ?></p>
                             <p class="product_price">Price: $<?php echo number_format($product['PRICE']); ?></p>
                             <p class="product_in_stock"><?php echo $product['IN_STOCK']; ?> in stock</p>
+                            <p class="product_sold"><?php echo $product['SOLD']; ?> sold</p>
 
                             <!-- 此處的USER_ID 為商品賣家的ID 而非當前使用者的ID -->
                             <p class="product_seller">Seller: <?php echo $product['USER_NAME']; ?></p>

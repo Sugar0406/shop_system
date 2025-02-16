@@ -328,6 +328,11 @@ button.prev:hover, button.next:hover {
     margin-top: 5px;
     margin-bottom: 5px;
 }
+.product_sold{
+    font-family: Verdana, sans-serif;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 
 .product_seller{
     font-family: Verdana, sans-serif;
