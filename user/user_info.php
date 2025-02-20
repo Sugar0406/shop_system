@@ -37,19 +37,20 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 
         // 作為賣家或買家的訂單都要列出
         $completed_status = "COMPLETED";
+        $incart_status = "IN_CART";
 
-        // 查詢自己作為賣家的訂單 (SELLER_ID為自己的ID 且狀態不為COMPLETED)
-        $sell_order_sql = "SELECT * FROM orders WHERE SELLER_ID=? AND STATUS!=?";
+        // 查詢自己作為賣家的訂單 (SELLER_ID為自己的ID 且狀態不為COMPLETED 和 IN_CART)
+        $sell_order_sql = "SELECT * FROM orders WHERE SELLER_ID=? AND STATUS!=? AND STATUS!=?";
         $sell_order_stmt = $conn->prepare($sell_order_sql);
-        $sell_order_stmt->bind_param("ss", $_SESSION['USER_ID'], $completed_status);
+        $sell_order_stmt->bind_param("sss", $_SESSION['USER_ID'], $incart_status, $completed_status);
         $sell_order_stmt->execute();
         $sell_order_result = $sell_order_stmt->get_result();
         $sell_order_stmt->close();
 
         // 查詢自己作為買家的訂單
-        $buy_order_sql = "SELECT * FROM orders WHERE BUYER_ID=? AND STATUS!=?";
+        $buy_order_sql = "SELECT * FROM orders WHERE BUYER_ID=? AND STATUS!=? AND STATUS!=?";
         $buy_order_stmt = $conn->prepare($buy_order_sql);
-        $buy_order_stmt->bind_param("ss", $_SESSION['USER_ID'], $completed_status);
+        $buy_order_stmt->bind_param("sss", $_SESSION['USER_ID'], $incart_status, $completed_status);
         $buy_order_stmt->execute();
         $buy_order_result = $buy_order_stmt->get_result();
         $buy_order_stmt->close();
@@ -96,6 +97,27 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
         $get_product_name_result = $get_product_name_stmt -> get_result();
         $row = $get_product_name_result->fetch_assoc();
         return $row['PRODUCT_NAME'];
+    }
+
+
+    function change_pay_method_name( $pay_method ){
+
+        $new_pay_method_name = "";
+
+        if( $pay_method == "CREDIT_CARD"){
+            $new_pay_method_name = "credit card";
+        }
+        elseif( $pay_method == "CASH_ON_DELIVERY"){
+            $new_pay_method_name = "cash on delivery";
+        }
+        elseif( $pay_method == "E_WALLET"){
+            $new_pay_method_name = "e wallet";
+        }
+        elseif($pay_method == "BANK_TRANSFER"){
+            $new_pay_method_name = "bank transfer";
+        }
+
+        return $new_pay_method_name;
     }
 
 
@@ -489,7 +511,9 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
                     <div class="order_card" status="buyer">
 
                         <p class="seller_name">Seller : <?php echo get_user_name($buy_order["SELLER_ID"]) ?></p>
-                        
+                        <p class="pay_methode">Payment Method : <?php echo change_pay_method_name($buy_order["PAY_METHOD"]); ?></p>
+                        <p class="checkout_time">Checke Out Time : <?php echo $buy_order["CREATED_AT"]; ?></p>
+
                         <!-- 生成商品 -->
                         <?php foreach (json_decode($buy_order["ORDER_PRODUCTS"], true) as $product): ?>
                             <div class="product_container">
@@ -535,7 +559,9 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
                     <div class="order_card" status="seller">
 
                         <p class="buyer_name">buyer : <?php echo get_user_name($sell_order["BUYER_ID"]) ?></p>
-                        
+                        <p class="pay_methode">Payment Method : <?php echo change_pay_method_name($sell_order["PAY_METHOD"]); ?></p>
+                        <p class="checkout_time">Checke Out Time : <?php echo $sell_order["CREATED_AT"]; ?></p>
+
                         <!-- 生成商品 -->
                         <?php foreach (json_decode($sell_order["ORDER_PRODUCTS"], true) as $product): ?>
                             <div class="product_container">
@@ -583,6 +609,8 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
                     
                         <p class="seller_name">Seller : <?php echo get_user_name($history_order["SELLER_ID"]) ?></p>
                         <p class="buyer_name">buyer : <?php echo get_user_name($history_order["BUYER_ID"]) ?></p>
+                        <p class="pay_methode">Payment Method : <?php echo change_pay_method_name($history_order["PAY_METHOD"]); ?></p>
+                        <p class="checkout_time">Checke Out Time : <?php echo $history_order["CREATED_AT"]; ?></p>
                         <p class="complete_time">Order Complete at : <?php echo $history_order["COMPLETED_AT"] ?></p>
                         
                         <!-- 生成商品 -->
@@ -648,7 +676,7 @@ $phone = isset($_SESSION['PHONE']) ? $_SESSION['PHONE'] : null;
 
                         <div class="product_info">
                             
-                            <a href="../product/product_details.php?product_id=<?php echo $product['PRODUCT_ID']; ?>" class="product_name"><?php echo htmlspecialchars($product['PRODUCT_NAME']); ?></a>
+                            <p class="product_name">Product Name: <?php echo htmlspecialchars($product['PRODUCT_NAME']); ?></p>
 
                             <p class="product_category">Product category: <?php echo htmlspecialchars($product['CATEGORY']); ?></p>
                             <p class="product_price">Price: $<?php echo number_format($product['PRICE']); ?></p>

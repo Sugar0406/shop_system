@@ -391,6 +391,20 @@ body {
     font-family: Verdana, sans-serif;
 }
 
+.pay_methode{
+    margin: 8px 0;
+    color: #d7951a;
+    font-weight: bold;
+    font-family: Verdana, sans-serif;
+}
+
+.checkout_time{
+    margin: 8px 0;
+    color: #d7951a;
+    font-weight: bold;
+    font-family: Verdana, sans-serif;
+}
+
 .complete_time {
     margin: 8px 0;
     color: #d7951a;

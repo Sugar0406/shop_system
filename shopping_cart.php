@@ -192,6 +192,11 @@ function getFirstImagePath($product_id) {
 
 
         <div class="shopping_cart_container">
+            <?php if ($in_cart_orders == NULL): ?>
+                <div class="empty_cart_message_container">
+                    <p class="empty_cart_message">Shopping cart is empty.</p>
+                </div>
+            <?php endif; ?>
 
             <?php foreach ($in_cart_orders as $order): ?>
                 <div class="order_card">
@@ -213,17 +218,27 @@ function getFirstImagePath($product_id) {
                         </div>
                     <?php endforeach; ?>
 
-                    <!-- 加入 hidden input 的check out button -->
-                    <form action="./checkout.php" method="POST">
-                        <input type="hidden" id="hidden_order_id" name="hidden_order_id" value=<?php echo $order["ORDER_ID"] ?>>
-                        <button type="submit" class="checkout_button" onclick="pressCheckout()">Checkout</button>
-                    </form>
+                    <div class="hidden_form_container">
+                        <!-- 加入 hidden input 的check out button -->
+                        <form action="./checkout.php" method="POST">
+                            <input type="hidden" id="checkout_hidden_order_id" name="hidden_order_id" value=<?php echo $order["ORDER_ID"] ?>>
+                            <button type="submit" class="checkout_button" onclick="pressCheckout()">Checkout</button>
+                        </form>
 
+                        <!-- 加入 hidden input 的check out button -->
+                        <form action="./delete_shopping_cart_order.php" method="POST">
+                            <input type="hidden" id="delete_cart_order_hidden_order_id" name="hidden_order_id" value=<?php echo $order["ORDER_ID"] ?>>
+                            <button type="submit" class="delete_cart_order_button" onclick="deleteCartOrder()">Delete</button>
+                        </form>
+                    </div>
                     <script>
                         function pressCheckout(){
-                            document.getElementById("hidden_order_id").submit();
+                            document.getElementById("checkout_hidden_order_id").submit();
                         }
                         
+                        function deleteCartOrder(){
+                            document.getElementById("delete_cart_order_hidden_order_id").submit();
+                        }
                     </script>
 
                 </div>

@@ -5,6 +5,7 @@
     //使用者收到貨品完成訂單 將STATUS改為COMPLETE 並記錄COMPLETED_AT時間
     $order_id = $_POST["order_id"];
     $order_status = "COMPLETED";
+    date_default_timezone_set('Asia/Taipei');
     $current_datetime = (new DateTime())->format('Y-m-d H:i:s');
 
     $update_order_sql = "UPDATE orders 

@@ -147,6 +147,18 @@ html, body {
     margin-top: 100px;
 }
 
+.empty_cart_message_container{
+    display: flex;
+    justify-content: center;
+}
+
+.empty_cart_message{
+    color: #c53c3c;
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: larger;
+}
+
 
 .order_card {
     background-color: #ffffff;
@@ -200,6 +212,11 @@ html, body {
     font-family: Verdana, sans-serif;
 }
 
+
+.hidden_form_container{
+    display: flex;
+}
+
 .checkout_button {
     background-color: #4CAF50;
     color: white;
@@ -211,10 +228,29 @@ html, body {
     margin-top: 12px;
     transition: background-color 0.3s ease;
     font-family: Verdana, sans-serif;
+    margin-right: 15px;
 }
 
 .checkout_button:hover {
     background-color: #38823c;
+}
+
+
+.delete_cart_order_button {
+    background-color: #c53c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 12px;
+    transition: background-color 0.3s ease;
+    font-family: Verdana, sans-serif;
+}
+
+.delete_cart_order_button:hover {
+    background-color: #823838;
 }
 
 /* order_card order_card order_card order_card order_card order_card order_card order_card order_card order_card */

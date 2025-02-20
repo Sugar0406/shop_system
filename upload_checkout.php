@@ -10,6 +10,8 @@
     $buyer_address = isset($_POST["address"]) ? $_POST["address"] : null;
     $buyer_phone = isset($_POST["phone"]) ? $_POST["phone"] : null;
     $order_status = "SUBMITTED";
+
+    date_default_timezone_set("Asia/Taipei");
     $current_datetime = (new DateTime())->format('Y-m-d H:i:s');
 
     // echo all test
